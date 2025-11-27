@@ -22,6 +22,8 @@ class _ProductPageState extends State<ProductPage> {
 
   int _selectedIndex = 0;
   ProductSize? _selectedSize;
+  int _selectedQuantity = 1;
+  final List<int> _quantities = List<int>.generate(10, (index) => index + 1);
 
   @override
   void initState() {
@@ -356,6 +358,44 @@ class _ProductPageState extends State<ProductPage> {
                         ),
                       );
                     }).toList(),
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  // Quantity selector
+                  const Text(
+                    'Quantity',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  SizedBox(
+                    width: 140,
+                    child: DropdownButtonFormField<int>(
+                      value: _selectedQuantity,
+                      items: _quantities
+                          .map((q) => DropdownMenuItem<int>(
+                                value: q,
+                                child: Text(q.toString()),
+                              ))
+                          .toList(),
+                      onChanged: (val) {
+                        if (val == null) return;
+                        setState(() => _selectedQuantity = val);
+                      },
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 12,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
+                    ),
                   ),
 
                   const SizedBox(height: 24),
