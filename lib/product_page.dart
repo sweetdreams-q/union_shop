@@ -1,7 +1,21 @@
 import 'package:flutter/material.dart';
 
-class ProductPage extends StatelessWidget {
+class ProductPage extends StatefulWidget {
   const ProductPage({super.key});
+
+  @override
+  State<ProductPage> createState() => _ProductPageState();
+}
+
+class _ProductPageState extends State<ProductPage> {
+  final List<String> _images = [
+    'assets/product_images/product1.png',
+    'assets/product_images/product2.png',
+    'assets/product_images/product3.png',
+    'assets/product_images/product4.png',
+  ];
+
+  int _selectedIndex = 0;
 
   void navigateToHome(BuildContext context) {
     Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
@@ -137,42 +151,86 @@ class ProductPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Product image
+                  // Product image gallery
                   Container(
-                    height: 300,
-                    width: double.infinity,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       color: Colors.grey[200],
                     ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.network(
-                        'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282',
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Container(
-                            color: Colors.grey[300],
-                            child: const Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.image_not_supported,
-                                    size: 64,
-                                    color: Colors.grey,
+                    child: Column(
+                      children: [
+                        // Main image
+                        SizedBox(
+                          height: 300,
+                          width: double.infinity,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Image.asset(
+                              _images[_selectedIndex],
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Container(
+                                  color: Colors.grey[300],
+                                  child: const Center(
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.image_not_supported,
+                                          size: 64,
+                                          color: Colors.grey,
+                                        ),
+                                        SizedBox(height: 8),
+                                        Text(
+                                          'Image unavailable',
+                                          style: TextStyle(color: Colors.grey),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  SizedBox(height: 8),
-                                  Text(
-                                    'Image unavailable',
-                                    style: TextStyle(color: Colors.grey),
-                                  ),
-                                ],
-                              ),
+                                );
+                              },
                             ),
-                          );
-                        },
-                      ),
+                          ),
+                        ),
+
+                        const SizedBox(height: 12),
+
+                        // Thumbnails
+                        SizedBox(
+                          height: 64,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: List.generate(_images.length, (index) {
+                              final isSelected = index == _selectedIndex;
+                              return GestureDetector(
+                                onTap: () => setState(() => _selectedIndex = index),
+                                child: Container(
+                                  margin: const EdgeInsets.symmetric(horizontal: 6),
+                                  padding: isSelected ? const EdgeInsets.all(3) : EdgeInsets.zero,
+                                  decoration: isSelected
+                                      ? BoxDecoration(
+                                          borderRadius: BorderRadius.circular(6),
+                                          border: Border.all(color: const Color(0xFF4d2963), width: 2),
+                                        )
+                                      : null,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(6),
+                                    child: Image.asset(
+                                      _images[index],
+                                      width: 64,
+                                      height: 64,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }),
+                          ),
+                        ),
+
+                        const SizedBox(height: 12),
+                      ],
                     ),
                   ),
 
