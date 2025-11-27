@@ -80,6 +80,19 @@ class GalleryPage extends StatelessWidget {
                               children: [
                                 IconButton(
                                   icon: const Icon(
+                                    Icons.home_outlined,
+                                    size: 18,
+                                    color: Colors.grey,
+                                  ),
+                                  padding: const EdgeInsets.all(8),
+                                  constraints: const BoxConstraints(
+                                    minWidth: 32,
+                                    minHeight: 32,
+                                  ),
+                                  onPressed: () => navigateToHome(context),
+                                ),
+                                IconButton(
+                                  icon: const Icon(
                                     Icons.search,
                                     size: 18,
                                     color: Colors.grey,
