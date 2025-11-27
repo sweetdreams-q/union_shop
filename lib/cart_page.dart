@@ -40,7 +40,6 @@ class CartPage extends StatelessWidget {
                             Text('Unit: ${_formatCurrency(item.unitPrice)}'),
                             if (item.size != null) Text('Size: ${item.size!.label}'),
                             Text('Quantity: ${item.quantity}'),
-                            Text('Subtotal: ${_formatCurrency(item.subTotal)}'),
                           ],
                         ),
                         trailing: IconButton(

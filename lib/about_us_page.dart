@@ -172,10 +172,10 @@ class AboutUsPage extends StatelessWidget {
                 padding: const EdgeInsets.all(40.0),
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 1000),
-                  child: Column(
+                  child: const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
+                      Text(
                         'ABOUT US',
                         style: TextStyle(
                           fontSize: 36,
@@ -184,10 +184,10 @@ class AboutUsPage extends StatelessWidget {
                           letterSpacing: 1,
                         ),
                       ),
-                      const SizedBox(height: 32),
+                      SizedBox(height: 32),
                       
                       // Our Story Section
-                      const Text(
+                      Text(
                         'Our Story',
                         style: TextStyle(
                           fontSize: 24,
@@ -195,8 +195,8 @@ class AboutUsPage extends StatelessWidget {
                           color: Color(0xFF4d2963),
                         ),
                       ),
-                      const SizedBox(height: 16),
-                      const Text(
+                      SizedBox(height: 16),
+                      Text(
                         'Welcome to the University of Portsmouth Students\' Union Shop. '
                         'We are dedicated to serving the student community with quality products, '
                         'merchandise, and essentials at affordable prices.',
@@ -206,10 +206,10 @@ class AboutUsPage extends StatelessWidget {
                           height: 1.6,
                         ),
                       ),
-                      const SizedBox(height: 32),
+                      SizedBox(height: 32),
                       
                       // Our Mission Section
-                      const Text(
+                      Text(
                         'Our Mission',
                         style: TextStyle(
                           fontSize: 24,
@@ -217,8 +217,8 @@ class AboutUsPage extends StatelessWidget {
                           color: Color(0xFF4d2963),
                         ),
                       ),
-                      const SizedBox(height: 16),
-                      const Text(
+                      SizedBox(height: 16),
+                      Text(
                         'We strive to provide students with:\n\n'
                         '• High-quality university merchandise and branded items\n'
                         '• Affordable everyday essentials and supplies\n'
@@ -231,10 +231,10 @@ class AboutUsPage extends StatelessWidget {
                           height: 1.6,
                         ),
                       ),
-                      const SizedBox(height: 32),
+                      SizedBox(height: 32),
                       
                       // Why Choose Us Section
-                      const Text(
+                      Text(
                         'Why Choose Us',
                         style: TextStyle(
                           fontSize: 24,
@@ -242,8 +242,8 @@ class AboutUsPage extends StatelessWidget {
                           color: Color(0xFF4d2963),
                         ),
                       ),
-                      const SizedBox(height: 16),
-                      const Text(
+                      SizedBox(height: 16),
+                      Text(
                         'As part of the Students\' Union, every purchase you make helps support '
                         'student activities, clubs, societies, and services on campus. Your support '
                         'directly contributes to making student life better at Portsmouth.',
@@ -253,10 +253,10 @@ class AboutUsPage extends StatelessWidget {
                           height: 1.6,
                         ),
                       ),
-                      const SizedBox(height: 32),
+                      SizedBox(height: 32),
                       
                       // Contact Section
-                      const Text(
+                      Text(
                         'Get In Touch',
                         style: TextStyle(
                           fontSize: 24,
@@ -264,8 +264,8 @@ class AboutUsPage extends StatelessWidget {
                           color: Color(0xFF4d2963),
                         ),
                       ),
-                      const SizedBox(height: 16),
-                      const Text(
+                      SizedBox(height: 16),
+                      Text(
                         'Have questions or need assistance? We\'re here to help!\n\n'
                         'Visit us during our opening hours or contact us through our website. '
                         'Our friendly team is always ready to assist you with your shopping needs.',

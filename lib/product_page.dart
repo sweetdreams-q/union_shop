@@ -54,16 +54,21 @@ class _ProductPageState extends State<ProductPage> {
     );
   }
 
+  void navigateToCart(BuildContext context) {
+    // Dismiss any visible snackbars before navigating
+    final messenger = ScaffoldMessenger.of(context);
+    messenger.hideCurrentSnackBar();
+
+    // Use root navigator to ensure navigation even when SnackBar overlays
+    Navigator.of(context, rootNavigator: true).push(
+      MaterialPageRoute(builder: (_) => const CartPage()),
+    );
+  }
+
   void placeholderCallbackForButtons() {
     // This is the event handler for buttons that don't work yet
   }
 
-  void navigateToCart(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => const CartPage()),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -438,10 +443,17 @@ class _ProductPageState extends State<ProductPage> {
 
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
+                            duration: Duration(seconds: 3),
                             content: Text('Added ${_selectedQuantity} × ${widget.product.title} to cart'),
                             action: SnackBarAction(
                               label: 'VIEW CART',
-                              onPressed: () => navigateToCart(context),
+                              onPressed: () {
+                                final messenger = ScaffoldMessenger.of(context);
+                                messenger.hideCurrentSnackBar();
+                                Navigator.of(context, rootNavigator: true).push(
+                                  MaterialPageRoute(builder: (_) => const CartPage()),
+                                );
+                              },
                             ),
                           ),
                         );
