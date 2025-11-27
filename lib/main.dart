@@ -260,26 +260,22 @@ class HomeScreen extends StatelessWidget {
                         ProductCard(
                           title: 'Placeholder Product 1',
                           price: '£10.00',
-                          imageUrl:
-                              'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282',
+                          imageUrl: 'assets/product_images/product1.png',
                         ),
                         ProductCard(
                           title: 'Placeholder Product 2',
                           price: '£15.00',
-                          imageUrl:
-                              'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282',
+                          imageUrl: 'assets/product_images/product2.png',
                         ),
                         ProductCard(
                           title: 'Placeholder Product 3',
                           price: '£20.00',
-                          imageUrl:
-                              'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282',
+                          imageUrl: 'assets/product_images/product3.png',
                         ),
                         ProductCard(
                           title: 'Placeholder Product 4',
                           price: '£25.00',
-                          imageUrl:
-                              'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282',
+                          imageUrl: 'assets/product_images/product4.png',
                         ),
                       ],
                     ),
@@ -331,7 +327,7 @@ class ProductCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            child: Image.network(
+            child: Image.asset(
               imageUrl,
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) {
