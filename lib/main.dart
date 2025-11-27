@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:union_shop/product_page.dart';
+import 'package:union_shop/models/product.dart';
 
 void main() {
   runApp(const UnionShopApp());
@@ -19,9 +20,6 @@ class UnionShopApp extends StatelessWidget {
       home: const HomeScreen(),
       // By default, the app starts at the '/' route, which is the HomeScreen
       initialRoute: '/',
-      // When navigating to '/product', build and return the ProductPage
-      // In your browser, try this link: http://localhost:49856/#/product
-      routes: {'/product': (context) => const ProductPage()},
     );
   }
 }
@@ -33,8 +31,13 @@ class HomeScreen extends StatelessWidget {
     Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
   }
 
-  void navigateToProduct(BuildContext context) {
-    Navigator.pushNamed(context, '/product');
+  void navigateToProduct(BuildContext context, Product product) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ProductPage(product: product),
+      ),
+    );
   }
 
   void placeholderCallbackForButtons() {
@@ -213,7 +216,7 @@ class HomeScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 32),
                         ElevatedButton(
-                          onPressed: placeholderCallbackForButtons,
+                          onPressed: () => navigateToProduct(context, sampleProducts[0]),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF4d2963),
                             foregroundColor: Colors.white,
@@ -256,28 +259,9 @@ class HomeScreen extends StatelessWidget {
                           MediaQuery.of(context).size.width > 600 ? 2 : 1,
                       crossAxisSpacing: 24,
                       mainAxisSpacing: 48,
-                      children: const [
-                        ProductCard(
-                          title: 'Placeholder Product 1',
-                          price: '£10.00',
-                          imageUrl: 'assets/product_images/product1.png',
-                        ),
-                        ProductCard(
-                          title: 'Placeholder Product 2',
-                          price: '£15.00',
-                          imageUrl: 'assets/product_images/product2.png',
-                        ),
-                        ProductCard(
-                          title: 'Placeholder Product 3',
-                          price: '£20.00',
-                          imageUrl: 'assets/product_images/product3.png',
-                        ),
-                        ProductCard(
-                          title: 'Placeholder Product 4',
-                          price: '£25.00',
-                          imageUrl: 'assets/product_images/product4.png',
-                        ),
-                      ],
+                      children: sampleProducts.map((product) => ProductCard(
+                        product: product,
+                      )).toList(),
                     ),
                   ],
                 ),
@@ -306,29 +290,30 @@ class HomeScreen extends StatelessWidget {
 }
 
 class ProductCard extends StatelessWidget {
-  final String title;
-  final String price;
-  final String imageUrl;
+  final Product product;
 
   const ProductCard({
     super.key,
-    required this.title,
-    required this.price,
-    required this.imageUrl,
+    required this.product,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/product');
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProductPage(product: product),
+          ),
+        );
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
             child: Image.asset(
-              imageUrl,
+              product.imageUrl,
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) {
                 return Container(
@@ -345,13 +330,13 @@ class ProductCard extends StatelessWidget {
             children: [
               const SizedBox(height: 4),
               Text(
-                title,
+                product.title,
                 style: const TextStyle(fontSize: 14, color: Colors.black),
                 maxLines: 2,
               ),
               const SizedBox(height: 4),
               Text(
-                price,
+                product.price,
                 style: const TextStyle(fontSize: 13, color: Colors.grey),
               ),
             ],

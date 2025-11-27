@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:union_shop/models/product.dart';
 
 class ProductPage extends StatefulWidget {
-  const ProductPage({super.key});
+  final Product product;
+  
+  const ProductPage({super.key, required this.product});
 
   @override
   State<ProductPage> createState() => _ProductPageState();
@@ -16,6 +19,15 @@ class _ProductPageState extends State<ProductPage> {
   ];
 
   int _selectedIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    // Set the selected index based on the product's image
+    final productImage = widget.product.imageUrl;
+    _selectedIndex = _images.indexOf(productImage);
+    if (_selectedIndex == -1) _selectedIndex = 0;
+  }
 
   void navigateToHome(BuildContext context) {
     Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
@@ -237,9 +249,9 @@ class _ProductPageState extends State<ProductPage> {
                   const SizedBox(height: 24),
 
                   // Product name
-                  const Text(
-                    'Placeholder Product Name',
-                    style: TextStyle(
+                  Text(
+                    widget.product.title,
+                    style: const TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
@@ -249,9 +261,9 @@ class _ProductPageState extends State<ProductPage> {
                   const SizedBox(height: 12),
 
                   // Product price
-                  const Text(
-                    '£15.00',
-                    style: TextStyle(
+                  Text(
+                    widget.product.price,
+                    style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF4d2963),
@@ -270,9 +282,9 @@ class _ProductPageState extends State<ProductPage> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  const Text(
-                    'This is a placeholder description for the product. Students should replace this with real product information and implement proper data management.',
-                    style: TextStyle(
+                  Text(
+                    widget.product.description,
+                    style: const TextStyle(
                       fontSize: 16,
                       color: Colors.grey,
                       height: 1.5,
