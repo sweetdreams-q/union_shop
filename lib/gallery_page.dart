@@ -3,6 +3,7 @@ import 'package:union_shop/models/product.dart';
 import 'package:union_shop/product_page.dart';
 import 'package:union_shop/widgets/footer.dart';
 import 'package:union_shop/about_us_page.dart';
+import 'package:union_shop/cart_page.dart';
 
 class GalleryPage extends StatelessWidget {
   const GalleryPage({super.key});
@@ -31,6 +32,13 @@ class GalleryPage extends StatelessWidget {
 
   void placeholderCallbackForButtons() {
     // This is the event handler for buttons that don't work yet
+  }
+
+  void navigateToCart(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const CartPage()),
+    );
   }
 
   @override
@@ -152,7 +160,7 @@ class GalleryPage extends StatelessWidget {
                                     minWidth: 32,
                                     minHeight: 32,
                                   ),
-                                  onPressed: placeholderCallbackForButtons,
+                                  onPressed: () => navigateToCart(context),
                                 ),
                                 IconButton(
                                   icon: const Icon(

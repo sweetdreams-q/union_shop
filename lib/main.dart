@@ -4,6 +4,8 @@ import 'package:union_shop/models/product.dart';
 import 'package:union_shop/gallery_page.dart';
 import 'package:union_shop/widgets/footer.dart';
 import 'package:union_shop/about_us_page.dart';
+import 'package:union_shop/models/cart.dart';
+import 'package:union_shop/cart_page.dart';
 
 void main() {
   runApp(const UnionShopApp());
@@ -14,7 +16,9 @@ class UnionShopApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return CartProvider(
+      cart: CartModel(),
+      child: MaterialApp(
       title: 'Union Shop',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -23,6 +27,7 @@ class UnionShopApp extends StatelessWidget {
       home: const HomeScreen(),
       // By default, the app starts at the '/' route, which is the HomeScreen
       initialRoute: '/',
+      ),
     );
   }
 }
@@ -158,7 +163,14 @@ class HomeScreen extends StatelessWidget {
                                     minWidth: 32,
                                     minHeight: 32,
                                   ),
-                                  onPressed: placeholderCallbackForButtons,
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => const CartPage(),
+                                      ),
+                                    );
+                                  },
                                 ),
                                 IconButton(
                                   icon: const Icon(

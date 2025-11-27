@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:union_shop/models/product.dart';
 import 'package:union_shop/widgets/footer.dart';
 import 'package:union_shop/about_us_page.dart';
+import 'package:union_shop/cart_page.dart';
+import 'package:union_shop/models/cart.dart';
 
 class ProductPage extends StatefulWidget {
   final Product product;
@@ -54,6 +56,13 @@ class _ProductPageState extends State<ProductPage> {
 
   void placeholderCallbackForButtons() {
     // This is the event handler for buttons that don't work yet
+  }
+
+  void navigateToCart(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const CartPage()),
+    );
   }
 
   @override
@@ -175,7 +184,7 @@ class _ProductPageState extends State<ProductPage> {
                                     minWidth: 32,
                                     minHeight: 32,
                                   ),
-                                  onPressed: placeholderCallbackForButtons,
+                                  onPressed: () => navigateToCart(context),
                                 ),
                                 IconButton(
                                   icon: const Icon(
@@ -395,6 +404,49 @@ class _ProductPageState extends State<ProductPage> {
                           borderRadius: BorderRadius.circular(4),
                         ),
                       ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  // Add to Cart
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF4d2963),
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.zero,
+                        ),
+                      ),
+                      onPressed: () {
+                        // Ensure size selected when sizes exist
+                        if (widget.product.availableSizes.isNotEmpty && _selectedSize == null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Please select a size')),
+                          );
+                          return;
+                        }
+                        final cart = CartProvider.of(context);
+                        cart.addItem(
+                          widget.product,
+                          size: _selectedSize,
+                          quantity: _selectedQuantity,
+                        );
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Added ${_selectedQuantity} × ${widget.product.title} to cart'),
+                            action: SnackBarAction(
+                              label: 'VIEW CART',
+                              onPressed: () => navigateToCart(context),
+                            ),
+                          ),
+                        );
+                      },
+                      child: const Text('ADD TO CART'),
                     ),
                   ),
 
