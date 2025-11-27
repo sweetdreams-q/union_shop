@@ -1,32 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:union_shop/product_page.dart';
 import 'package:union_shop/models/product.dart';
-import 'package:union_shop/gallery_page.dart';
+import 'package:union_shop/product_page.dart';
 
-void main() {
-  runApp(const UnionShopApp());
-}
-
-class UnionShopApp extends StatelessWidget {
-  const UnionShopApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Union Shop',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF4d2963)),
-      ),
-      home: const HomeScreen(),
-      // By default, the app starts at the '/' route, which is the HomeScreen
-      initialRoute: '/',
-    );
-  }
-}
-
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class GalleryPage extends StatelessWidget {
+  const GalleryPage({super.key});
 
   void navigateToHome(BuildContext context) {
     Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
@@ -37,15 +14,6 @@ class HomeScreen extends StatelessWidget {
       context,
       MaterialPageRoute(
         builder: (context) => ProductPage(product: product),
-      ),
-    );
-  }
-
-  void navigateToGallery(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const GalleryPage(),
       ),
     );
   }
@@ -173,80 +141,7 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
 
-            // Hero Section
-            SizedBox(
-              height: 400,
-              width: double.infinity,
-              child: Stack(
-                children: [
-                  // Background image
-                  Positioned.fill(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: NetworkImage(
-                            'https://shop.upsu.net/cdn/shop/files/PortsmouthCityPostcard2_1024x1024@2x.jpg?v=1752232561',
-                          ),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.black.withValues(alpha: 0.7),
-                        ),
-                      ),
-                    ),
-                  ),
-                  // Content overlay
-                  Positioned(
-                    left: 24,
-                    right: 24,
-                    top: 80,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const Text(
-                          'Placeholder Hero Title',
-                          style: TextStyle(
-                            fontSize: 32,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            height: 1.2,
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        const Text(
-                          "This is placeholder text for the hero section.",
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                            height: 1.5,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: 32),
-                        ElevatedButton(
-                          onPressed: () => navigateToGallery(context),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF4d2963),
-                            foregroundColor: Colors.white,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.zero,
-                            ),
-                          ),
-                          child: const Text(
-                            'BROWSE PRODUCTS',
-                            style: TextStyle(fontSize: 14, letterSpacing: 1),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            // Products Section
+            // Products Gallery Section
             Container(
               color: Colors.white,
               child: Padding(
@@ -254,11 +149,20 @@ class HomeScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     const Text(
-                      'PRODUCTS SECTION',
+                      'ALL PRODUCTS',
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
                         color: Colors.black,
                         letterSpacing: 1,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      'Browse our complete collection',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey,
                       ),
                     ),
                     const SizedBox(height: 48),
@@ -269,7 +173,7 @@ class HomeScreen extends StatelessWidget {
                           MediaQuery.of(context).size.width > 600 ? 2 : 1,
                       crossAxisSpacing: 24,
                       mainAxisSpacing: 48,
-                      children: sampleProducts.map((product) => ProductCard(
+                      children: sampleProducts.map((product) => GalleryProductCard(
                         product: product,
                       )).toList(),
                     ),
@@ -299,10 +203,10 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class ProductCard extends StatelessWidget {
+class GalleryProductCard extends StatelessWidget {
   final Product product;
 
-  const ProductCard({
+  const GalleryProductCard({
     super.key,
     required this.product,
   });
