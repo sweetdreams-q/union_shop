@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:union_shop/about_us_page.dart';
 
 class AppFooter extends StatefulWidget {
   const AppFooter({super.key});
@@ -52,6 +53,15 @@ class _AppFooterState extends State<AppFooter> {
             child: const Text('Close'),
           ),
         ],
+      ),
+    );
+  }
+
+  void _navigateToAboutUs() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const AboutUsPage(),
       ),
     );
   }
@@ -160,23 +170,13 @@ class _AppFooterState extends State<AppFooter> {
         _buildFooterText('Contact Us'),
         _buildFooterText('FAQs'),
         _buildFooterText('Shipping Information'),
-        const SizedBox(height: 8),
-        TextButton(
-          onPressed: _showTermsAndConditions,
-          style: TextButton.styleFrom(
-            padding: EdgeInsets.zero,
-            minimumSize: const Size(0, 0),
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            alignment: Alignment.centerLeft,
-          ),
-          child: const Text(
-            'Terms & Conditions',
-            style: TextStyle(
-              color: Color(0xFF4d2963),
-              fontSize: 14,
-              decoration: TextDecoration.underline,
-            ),
-          ),
+        GestureDetector(
+          onTap: _navigateToAboutUs,
+          child: _buildFooterText('About Us'),
+        ),
+        GestureDetector(
+          onTap: _showTermsAndConditions,
+          child: _buildFooterText('Terms & Conditions'),
         ),
       ],
     );

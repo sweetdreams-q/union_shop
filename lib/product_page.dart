@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:union_shop/models/product.dart';
 import 'package:union_shop/widgets/footer.dart';
+import 'package:union_shop/about_us_page.dart';
 
 class ProductPage extends StatefulWidget {
   final Product product;
@@ -20,6 +21,7 @@ class _ProductPageState extends State<ProductPage> {
   ];
 
   int _selectedIndex = 0;
+  ProductSize? _selectedSize;
 
   @override
   void initState() {
@@ -28,10 +30,24 @@ class _ProductPageState extends State<ProductPage> {
     final productImage = widget.product.imageUrl;
     _selectedIndex = _images.indexOf(productImage);
     if (_selectedIndex == -1) _selectedIndex = 0;
+    
+    // Set default selected size
+    if (widget.product.availableSizes.isNotEmpty) {
+      _selectedSize = widget.product.availableSizes[0];
+    }
   }
 
   void navigateToHome(BuildContext context) {
     Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+  }
+
+  void navigateToAboutUs(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const AboutUsPage(),
+      ),
+    );
   }
 
   void placeholderCallbackForButtons() {
@@ -106,6 +122,19 @@ class _ProductPageState extends State<ProductPage> {
                                     minHeight: 32,
                                   ),
                                   onPressed: () => navigateToHome(context),
+                                ),
+                                IconButton(
+                                  icon: const Icon(
+                                    Icons.info_outline,
+                                    size: 18,
+                                    color: Colors.grey,
+                                  ),
+                                  padding: const EdgeInsets.all(8),
+                                  constraints: const BoxConstraints(
+                                    minWidth: 32,
+                                    minHeight: 32,
+                                  ),
+                                  onPressed: () => navigateToAboutUs(context),
                                 ),
                                 IconButton(
                                   icon: const Icon(
@@ -282,6 +311,51 @@ class _ProductPageState extends State<ProductPage> {
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF4d2963),
                     ),
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  // Size selector
+                  const Text(
+                    'Select Size',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Wrap(
+                    spacing: 12,
+                    runSpacing: 12,
+                    children: widget.product.availableSizes.map((size) {
+                      final isSelected = size == _selectedSize;
+                      return GestureDetector(
+                        onTap: () => setState(() => _selectedSize = size),
+                        child: Container(
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: isSelected ? const Color(0xFF4d2963) : Colors.white,
+                            border: Border.all(
+                              color: isSelected ? const Color(0xFF4d2963) : Colors.grey[400]!,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: Center(
+                            child: Text(
+                              size.label,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: isSelected ? Colors.white : Colors.black,
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList(),
                   ),
 
                   const SizedBox(height: 24),

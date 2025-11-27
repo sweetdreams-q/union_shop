@@ -1,9 +1,21 @@
+enum ProductSize {
+  xs('XS'),
+  s('S'),
+  m('M'),
+  l('L'),
+  xl('XL');
+
+  final String label;
+  const ProductSize(this.label);
+}
+
 class Product {
   final String id;
   final String title;
   final String price;
   final String imageUrl;
   final String description;
+  final List<ProductSize> availableSizes;
 
   const Product({
     required this.id,
@@ -11,6 +23,13 @@ class Product {
     required this.price,
     required this.imageUrl,
     required this.description,
+    this.availableSizes = const [
+      ProductSize.xs,
+      ProductSize.s,
+      ProductSize.m,
+      ProductSize.l,
+      ProductSize.xl,
+    ],
   });
 }
 

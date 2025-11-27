@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:union_shop/models/product.dart';
 import 'package:union_shop/product_page.dart';
 import 'package:union_shop/widgets/footer.dart';
+import 'package:union_shop/about_us_page.dart';
 
 class GalleryPage extends StatelessWidget {
   const GalleryPage({super.key});
@@ -15,6 +16,15 @@ class GalleryPage extends StatelessWidget {
       context,
       MaterialPageRoute(
         builder: (context) => ProductPage(product: product),
+      ),
+    );
+  }
+
+  void navigateToAboutUs(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const AboutUsPage(),
       ),
     );
   }
@@ -91,6 +101,19 @@ class GalleryPage extends StatelessWidget {
                                     minHeight: 32,
                                   ),
                                   onPressed: () => navigateToHome(context),
+                                ),
+                                IconButton(
+                                  icon: const Icon(
+                                    Icons.info_outline,
+                                    size: 18,
+                                    color: Colors.grey,
+                                  ),
+                                  padding: const EdgeInsets.all(8),
+                                  constraints: const BoxConstraints(
+                                    minWidth: 32,
+                                    minHeight: 32,
+                                  ),
+                                  onPressed: () => navigateToAboutUs(context),
                                 ),
                                 IconButton(
                                   icon: const Icon(
@@ -254,6 +277,11 @@ class GalleryProductCard extends StatelessWidget {
               Text(
                 product.price,
                 style: const TextStyle(fontSize: 13, color: Colors.grey),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'Sizes: ${product.availableSizes.map((s) => s.label).join(', ')}',
+                style: const TextStyle(fontSize: 12, color: Colors.grey),
               ),
             ],
           ),
