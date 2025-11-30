@@ -225,7 +225,7 @@ class _ProductPageState extends State<ProductPage> {
                             borderRadius: BorderRadius.circular(8),
                             child: Image.asset(
                               widget.product.imageUrl,
-                              fit: BoxFit.cover,
+                              fit: BoxFit.contain,
                               errorBuilder: (context, error, stackTrace) {
                                 return Container(
                                   color: Colors.grey[300],
@@ -393,22 +393,30 @@ class _ProductPageState extends State<ProductPage> {
                           quantity: _selectedQuantity,
                         );
 
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            duration: Duration(seconds: 3),
-                            content: Text('Added ${_selectedQuantity} × ${widget.product.title} to cart'),
-                            action: SnackBarAction(
-                              label: 'VIEW CART',
-                              onPressed: () {
-                                final messenger = ScaffoldMessenger.of(context);
-                                messenger.hideCurrentSnackBar();
-                                Navigator.of(context, rootNavigator: true).push(
-                                  MaterialPageRoute(builder: (_) => const CartPage()),
-                                );
-                              },
-                            ),
+                        final snack = SnackBar(
+                          duration: const Duration(seconds: 3),
+                          content: Text('Added ${_selectedQuantity} × ${widget.product.title} to cart'),
+                          action: SnackBarAction(
+                            label: 'VIEW CART',
+                            onPressed: () {
+                              // Navigate to cart. Do not explicitly hide the SnackBar here;
+                              // it will dismiss after its duration regardless.
+                              Navigator.of(context, rootNavigator: true).push(
+                                MaterialPageRoute(builder: (_) => const CartPage()),
+                              );
+                            },
                           ),
                         );
+
+                        // Show the SnackBar and also schedule a guaranteed close after its duration
+                        final controller = ScaffoldMessenger.of(context).showSnackBar(snack);
+                        Future.delayed(snack.duration + const Duration(milliseconds: 100), () {
+                          try {
+                            controller.close();
+                          } catch (_) {
+                            // ignore any errors if already closed
+                          }
+                        });
                       },
                       child: const Text('ADD TO CART'),
                     ),
