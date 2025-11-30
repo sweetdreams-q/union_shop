@@ -4,6 +4,7 @@ import 'package:union_shop/models/product.dart';
 import 'package:union_shop/gallery_page.dart';
 import 'package:union_shop/widgets/footer.dart';
 import 'package:union_shop/about_us_page.dart';
+import 'package:union_shop/search_page.dart';
 import 'package:union_shop/models/cart.dart';
 import 'package:union_shop/cart_page.dart';
 
@@ -63,6 +64,20 @@ class HomeScreen extends StatelessWidget {
       MaterialPageRoute(
         builder: (context) => const AboutUsPage(),
       ),
+    );
+  }
+
+  void navigateToSearch(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const SearchPage()),
+    );
+  }
+
+  void navigateToCart(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const CartPage()),
     );
   }
 
@@ -163,14 +178,7 @@ class HomeScreen extends StatelessWidget {
                                     minWidth: 32,
                                     minHeight: 32,
                                   ),
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) => const CartPage(),
-                                      ),
-                                    );
-                                  },
+                                  onPressed: () => navigateToSearch(context),
                                 ),
                                 IconButton(
                                   icon: const Icon(
@@ -196,7 +204,7 @@ class HomeScreen extends StatelessWidget {
                                     minWidth: 32,
                                     minHeight: 32,
                                   ),
-                                  onPressed: placeholderCallbackForButtons,
+                                  onPressed: () => navigateToCart(context),
                                 ),
                                 IconButton(
                                   icon: const Icon(
