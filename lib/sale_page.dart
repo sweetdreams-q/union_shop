@@ -21,8 +21,8 @@ class SalePage extends StatelessWidget {
               width: double.infinity,
               color: const Color(0xFFf6e8fb),
               padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
-              child: Column(
-                children: const [
+              child: const Column(
+                children: [
                   Text(
                     'FLASH SALE',
                     style: TextStyle(
@@ -56,7 +56,7 @@ class SalePage extends StatelessWidget {
 
 class _SaleProductTile extends StatelessWidget {
   final Product product;
-  const _SaleProductTile({required this.product, super.key});
+  const _SaleProductTile({required this.product});
 
   @override
   Widget build(BuildContext context) {
