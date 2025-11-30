@@ -13,14 +13,17 @@ class Product {
   final String id;
   final String title;
   final String price;
+  final String? salePrice;
   final String imageUrl;
   final String description;
   final List<ProductSize> availableSizes;
+  final bool onSale;
 
   const Product({
     required this.id,
     required this.title,
     required this.price,
+    this.salePrice,
     required this.imageUrl,
     required this.description,
     this.availableSizes = const [
@@ -30,6 +33,7 @@ class Product {
       ProductSize.l,
       ProductSize.xl,
     ],
+    this.onSale = false,
   });
 }
 
@@ -39,8 +43,10 @@ const List<Product> sampleProducts = [
     id: '1',
     title: 'Essentials tshirt',
     price: '£10.00',
+    salePrice: '£8.00',
     imageUrl: 'assets/product_images/product1.png',
     description: 'This is a detailed description for Product 1. A wonderful item perfect for everyday use.',
+    onSale: true,
   ),
   Product(
     id: '2',
@@ -53,8 +59,10 @@ const List<Product> sampleProducts = [
     id: '3',
         title: 'Essentials sweatshirt',
         price: '£20.00',
+        salePrice: '£16.00',
     imageUrl: 'assets/product_images/product3.png',
     description: 'This is a detailed description for Product 3. Premium quality with exceptional features.',
+    onSale: true,
   ),
   Product(
     id: '4',

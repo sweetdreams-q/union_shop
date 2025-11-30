@@ -5,6 +5,7 @@ import 'package:union_shop/gallery_page.dart';
 import 'package:union_shop/widgets/footer.dart';
 import 'package:union_shop/about_us_page.dart';
 import 'package:union_shop/search_page.dart';
+import 'package:union_shop/sale_page.dart';
 import 'package:union_shop/models/cart.dart';
 import 'package:union_shop/cart_page.dart';
 
@@ -74,6 +75,13 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
+  void navigateToSale(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const SalePage()),
+    );
+  }
+
   void navigateToCart(BuildContext context) {
     Navigator.push(
       context,
@@ -99,14 +107,17 @@ class HomeScreen extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     // Top banner
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      color: const Color(0xFF4d2963),
-                      child: const Text(
-                        'BIG SALE! OUR ESSENTIAL RANGE HAS DROPPED IN PRICE! OVER 20% OFF! COME GRAB YOURS WHILE STOCK LASTS!',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white, fontSize: 16),
+                    GestureDetector(
+                      onTap: () => navigateToSale(context),
+                      child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        color: const Color(0xFF4d2963),
+                        child: const Text(
+                          'BIG SALE! OUR ESSENTIAL RANGE HAS DROPPED IN PRICE! OVER 20% OFF! COME GRAB YOURS WHILE STOCK LASTS!',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        ),
                       ),
                     ),
                     // Main header row

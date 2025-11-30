@@ -5,6 +5,7 @@ import 'package:union_shop/widgets/footer.dart';
 import 'package:union_shop/about_us_page.dart';
 import 'package:union_shop/cart_page.dart';
 import 'package:union_shop/search_page.dart';
+import 'package:union_shop/sale_page.dart';
 
 class GalleryPage extends StatelessWidget {
   const GalleryPage({super.key});
@@ -63,14 +64,22 @@ class GalleryPage extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     // Top banner
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      color: const Color(0xFF4d2963),
-                      child: const Text(
-                        'BIG SALE! OUR ESSENTIAL RANGE HAS DROPPED IN PRICE! OVER 20% OFF! COME GRAB YOURS WHILE STOCK LASTS!',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white, fontSize: 16),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const SalePage()),
+                        );
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        color: const Color(0xFF4d2963),
+                        child: const Text(
+                          'BIG SALE! OUR ESSENTIAL RANGE HAS DROPPED IN PRICE! OVER 20% OFF! COME GRAB YOURS WHILE STOCK LASTS!',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        ),
                       ),
                     ),
                     // Main header row
