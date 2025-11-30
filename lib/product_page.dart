@@ -15,14 +15,6 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
-  final List<String> _images = [
-    'assets/product_images/product1.png',
-    'assets/product_images/product2.png',
-    'assets/product_images/product3.png',
-    'assets/product_images/product4.png',
-  ];
-
-  int _selectedIndex = 0;
   ProductSize? _selectedSize;
   int _selectedQuantity = 1;
   final List<int> _quantities = List<int>.generate(10, (index) => index + 1);
@@ -30,11 +22,6 @@ class _ProductPageState extends State<ProductPage> {
   @override
   void initState() {
     super.initState();
-    // Set the selected index based on the product's image
-    final productImage = widget.product.imageUrl;
-    _selectedIndex = _images.indexOf(productImage);
-    if (_selectedIndex == -1) _selectedIndex = 0;
-    
     // Set default selected size
     if (widget.product.availableSizes.isNotEmpty) {
       _selectedSize = widget.product.availableSizes[0];
@@ -230,14 +217,14 @@ class _ProductPageState extends State<ProductPage> {
                     ),
                     child: Column(
                       children: [
-                        // Main image
+                        // Main image (single image per product)
                         SizedBox(
                           height: 300,
                           width: double.infinity,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(8),
                             child: Image.asset(
-                              _images[_selectedIndex],
+                              widget.product.imageUrl,
                               fit: BoxFit.cover,
                               errorBuilder: (context, error, stackTrace) {
                                 return Container(
@@ -262,41 +249,6 @@ class _ProductPageState extends State<ProductPage> {
                                 );
                               },
                             ),
-                          ),
-                        ),
-
-                        const SizedBox(height: 12),
-
-                        // Thumbnails
-                        SizedBox(
-                          height: 64,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: List.generate(_images.length, (index) {
-                              final isSelected = index == _selectedIndex;
-                              return GestureDetector(
-                                onTap: () => setState(() => _selectedIndex = index),
-                                child: Container(
-                                  margin: const EdgeInsets.symmetric(horizontal: 6),
-                                  padding: isSelected ? const EdgeInsets.all(3) : EdgeInsets.zero,
-                                  decoration: isSelected
-                                      ? BoxDecoration(
-                                          borderRadius: BorderRadius.circular(6),
-                                          border: Border.all(color: const Color(0xFF4d2963), width: 2),
-                                        )
-                                      : null,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(6),
-                                    child: Image.asset(
-                                      _images[index],
-                                      width: 64,
-                                      height: 64,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                              );
-                            }),
                           ),
                         ),
 
