@@ -18,7 +18,7 @@ class CartItem {
     required this.quantity,
   });
 
-  double get unitPrice => parsePrice(product.price);
+  double get unitPrice => parsePrice(product.onSale && product.salePrice != null ? product.salePrice! : product.price);
   double get subTotal => unitPrice * quantity;
 }
 

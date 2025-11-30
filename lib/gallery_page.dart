@@ -192,6 +192,24 @@ class GalleryPage extends StatelessWidget {
                                   ),
                                   onPressed: placeholderCallbackForButtons,
                                 ),
+                                IconButton(
+                                  icon: const Icon(
+                                    Icons.local_offer,
+                                    size: 18,
+                                    color: Colors.grey,
+                                  ),
+                                  padding: const EdgeInsets.all(8),
+                                  constraints: const BoxConstraints(
+                                    minWidth: 32,
+                                    minHeight: 32,
+                                  ),
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (_) => const SalePage()),
+                                    );
+                                  },
+                                ),
                               ],
                             ),
                           ),
@@ -276,17 +294,39 @@ class GalleryProductCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            child: Image.asset(
-              product.imageUrl,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return Container(
-                  color: Colors.grey[300],
-                  child: const Center(
-                    child: Icon(Icons.image_not_supported, color: Colors.grey),
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  child: Image.asset(
+                    product.imageUrl,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        color: Colors.grey[300],
+                        child: const Center(
+                          child: Icon(Icons.image_not_supported, color: Colors.grey),
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
+                ),
+                if (product.onSale)
+                  Positioned(
+                    top: 8,
+                    left: 8,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFb00020),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: const Text(
+                        'SALE',
+                        style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+              ],
             ),
           ),
           Column(
@@ -299,10 +339,22 @@ class GalleryProductCard extends StatelessWidget {
                 maxLines: 2,
               ),
               const SizedBox(height: 4),
-              Text(
-                product.price,
-                style: const TextStyle(fontSize: 13, color: Colors.grey),
-              ),
+                  if (product.onSale && product.salePrice != null) ...[
+                    Text(
+                      product.salePrice!,
+                      style: const TextStyle(fontSize: 13, color: Color(0xFFb00020), fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      product.price,
+                      style: const TextStyle(fontSize: 13, color: Colors.grey, decoration: TextDecoration.lineThrough),
+                    ),
+                  ] else ...[
+                    Text(
+                      product.price,
+                      style: const TextStyle(fontSize: 13, color: Colors.grey),
+                    ),
+                  ],
               const SizedBox(height: 4),
               Text(
                 'Sizes: ${product.availableSizes.map((s) => s.label).join(', ')}',

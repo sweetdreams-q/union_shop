@@ -230,6 +230,20 @@ class HomeScreen extends StatelessWidget {
                                   ),
                                   onPressed: placeholderCallbackForButtons,
                                 ),
+                                // Sale page button
+                                IconButton(
+                                  icon: const Icon(
+                                    Icons.local_offer,
+                                    size: 18,
+                                    color: Colors.grey,
+                                  ),
+                                  padding: const EdgeInsets.all(8),
+                                  constraints: const BoxConstraints(
+                                    minWidth: 32,
+                                    minHeight: 32,
+                                  ),
+                                  onPressed: () => navigateToSale(context),
+                                ),
                               ],
                             ),
                           ),
@@ -379,16 +393,16 @@ class ProductCard extends StatelessWidget {
         children: [
           Expanded(
             child: Image.asset(
-              product.imageUrl,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return Container(
-                  color: Colors.grey[300],
-                  child: const Center(
-                    child: Icon(Icons.image_not_supported, color: Colors.grey),
-                  ),
-                );
-              },
+                  product.imageUrl,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      color: Colors.grey[300],
+                      child: const Center(
+                        child: Icon(Icons.image_not_supported, color: Colors.grey),
+                      ),
+                    );
+                  },
             ),
           ),
           Column(
@@ -401,10 +415,22 @@ class ProductCard extends StatelessWidget {
                 maxLines: 2,
               ),
               const SizedBox(height: 4),
-              Text(
-                product.price,
-                style: const TextStyle(fontSize: 13, color: Colors.grey),
-              ),
+                  if (product.onSale && product.salePrice != null) ...[
+                    Text(
+                      product.salePrice!,
+                      style: const TextStyle(fontSize: 13, color: Color(0xFFb00020), fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      product.price,
+                      style: const TextStyle(fontSize: 13, color: Colors.grey, decoration: TextDecoration.lineThrough),
+                    ),
+                  ] else ...[
+                    Text(
+                      product.price,
+                      style: const TextStyle(fontSize: 13, color: Colors.grey),
+                    ),
+                  ],
               const SizedBox(height: 4),
               Text(
                 'Sizes: ${product.availableSizes.map((s) => s.label).join(', ')}',

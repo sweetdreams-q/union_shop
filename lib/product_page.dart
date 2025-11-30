@@ -238,34 +238,56 @@ class _ProductPageState extends State<ProductPage> {
                         SizedBox(
                           height: 300,
                           width: double.infinity,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Image.asset(
-                              widget.product.imageUrl,
-                              fit: BoxFit.contain,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Container(
-                                  color: Colors.grey[300],
-                                  child: const Center(
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.image_not_supported,
-                                          size: 64,
-                                          color: Colors.grey,
+                          child: Stack(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Image.asset(
+                                  widget.product.imageUrl,
+                                  fit: BoxFit.contain,
+                                  width: double.infinity,
+                                  height: 300,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Container(
+                                      color: Colors.grey[300],
+                                      child: const Center(
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Icon(
+                                              Icons.image_not_supported,
+                                              size: 64,
+                                              color: Colors.grey,
+                                            ),
+                                            SizedBox(height: 8),
+                                            Text(
+                                              'Image unavailable',
+                                              style: TextStyle(color: Colors.grey),
+                                            ),
+                                          ],
                                         ),
-                                        SizedBox(height: 8),
-                                        Text(
-                                          'Image unavailable',
-                                          style: TextStyle(color: Colors.grey),
-                                        ),
-                                      ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                              if (widget.product.onSale)
+                                Positioned(
+                                  top: 8,
+                                  left: 8,
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFFb00020),
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                    child: const Text(
+                                      'SALE',
+                                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                                     ),
                                   ),
-                                );
-                              },
-                            ),
+                                ),
+                            ],
                           ),
                         ),
 
@@ -289,14 +311,38 @@ class _ProductPageState extends State<ProductPage> {
                   const SizedBox(height: 12),
 
                   // Product price
-                  Text(
-                    widget.product.price,
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF4d2963),
+                  if (widget.product.onSale && widget.product.salePrice != null) ...[
+                    Row(
+                      children: [
+                        Text(
+                          widget.product.salePrice!,
+                          style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF4d2963),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Text(
+                          widget.product.price,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            color: Colors.grey,
+                            decoration: TextDecoration.lineThrough,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
+                  ] else ...[
+                    Text(
+                      widget.product.price,
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF4d2963),
+                      ),
+                    ),
+                  ],
 
                   const SizedBox(height: 24),
 
