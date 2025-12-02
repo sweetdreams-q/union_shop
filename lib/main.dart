@@ -47,7 +47,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-  final PageController _pageController = PageController();
+  final PageController _pageController = PageController(initialPage: 1);
   int _currentIndex = 0;
   bool _isPlaying = true;
   Timer? _timer;
@@ -134,8 +134,8 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     _timer = Timer.periodic(const Duration(seconds: 4), (_) {
       if (!_isPlaying) return;
-      final next = (_currentIndex + 1) % slides.length;
-      _pageController.animateToPage(next, duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
+      // Advance one page in the extended page view (we use duplicates at ends)
+      _pageController.nextPage(duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
     });
   }
 
@@ -180,12 +180,40 @@ class _HomeScreenState extends State<HomeScreen> {
               width: double.infinity,
               child: Stack(
                 children: [
+                  // Extended PageView: we add a duplicate last slide at index 0 and
+                  // a duplicate first slide at the last index so we can jump
+                  // without visual flicker when looping.
                   PageView.builder(
                     controller: _pageController,
-                    itemCount: slides.length,
-                    onPageChanged: (idx) => setState(() => _currentIndex = idx),
+                    itemCount: slides.length + 2,
+                    onPageChanged: (pageIndex) {
+                      final int count = slides.length;
+                      int realIndex;
+                      if (pageIndex == 0) {
+                        // jumped to the duplicate of the last slide; schedule jump to real last
+                        Future.microtask(() => _pageController.jumpToPage(count));
+                        realIndex = count - 1;
+                      } else if (pageIndex == count + 1) {
+                        // jumped to the duplicate of the first slide; schedule jump to real first
+                        Future.microtask(() => _pageController.jumpToPage(1));
+                        realIndex = 0;
+                      } else {
+                        realIndex = pageIndex - 1;
+                      }
+                      setState(() => _currentIndex = realIndex);
+                    },
                     itemBuilder: (context, index) {
-                      final slide = slides[index];
+                      // map extended index to slide index
+                      final int count = slides.length;
+                      Map<String, String> slide;
+                      if (index == 0) {
+                        slide = slides[count - 1];
+                      } else if (index == count + 1) {
+                        slide = slides[0];
+                      } else {
+                        slide = slides[index - 1];
+                      }
+
                       return Positioned.fill(
                         child: Container(
                           decoration: BoxDecoration(
@@ -233,17 +261,15 @@ class _HomeScreenState extends State<HomeScreen> {
                         // Button placeholder: only first slide navigates
                         ElevatedButton(
                           onPressed: _currentIndex == 0 ? () => navigateToGallery(context) : null,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF4d2963),
-                            foregroundColor: Colors.white,
-                            shape: const RoundedRectangleBorder(
+                          style: ButtonStyle(
+                            backgroundColor: WidgetStateProperty.all(const Color(0xFF4d2963)),
+                            foregroundColor: WidgetStateProperty.all(Colors.white),
+                            shape: WidgetStateProperty.all(const RoundedRectangleBorder(
                               borderRadius: BorderRadius.zero,
-                            ),
+                            )),
+                            textStyle: WidgetStateProperty.all(const TextStyle(fontSize: 14, letterSpacing: 1)),
                           ),
-                          child: Text(
-                            slides[_currentIndex]['button']!,
-                            style: const TextStyle(fontSize: 14, letterSpacing: 1),
-                          ),
+                          child: Text(slides[_currentIndex]['button']!),
                         ),
                       ],
                     ),
@@ -260,12 +286,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         index: _currentIndex,
                         isPlaying: _isPlaying,
                         onPrev: () {
-                          final prev = (_currentIndex - 1 + slides.length) % slides.length;
-                          _pageController.animateToPage(prev, duration: const Duration(milliseconds: 400), curve: Curves.easeInOut);
+                          final currentPage = (_pageController.page ?? 1).round();
+                          final target = currentPage - 1;
+                          _pageController.animateToPage(target, duration: const Duration(milliseconds: 2000), curve: Curves.easeInOut);
                         },
                         onNext: () {
-                          final next = (_currentIndex + 1) % slides.length;
-                          _pageController.animateToPage(next, duration: const Duration(milliseconds: 400), curve: Curves.easeInOut);
+                          final currentPage = (_pageController.page ?? 1).round();
+                          final target = currentPage + 1;
+                          _pageController.animateToPage(target, duration: const Duration(milliseconds: 2000), curve: Curves.easeInOut);
                         },
                         onTogglePlay: () => setState(() => _isPlaying = !_isPlaying),
                       ),
