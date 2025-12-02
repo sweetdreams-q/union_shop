@@ -57,7 +57,7 @@ const List<Product> sampleProducts = [
   ),
   Product(
     id: '3',
-        title: 'Essentials sweatshirt',
+        title: 'Essentials hoodie',
         price: '£20.00',
         salePrice: '£16.00',
     imageUrl: 'assets/product_images/product3.png',

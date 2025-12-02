@@ -404,7 +404,7 @@ class _ProductPageState extends State<ProductPage> {
                   SizedBox(
                     width: 140,
                     child: DropdownButtonFormField<int>(
-                      value: _selectedQuantity,
+                      initialValue: _selectedQuantity,
                       items: _quantities
                           .map((q) => DropdownMenuItem<int>(
                                 value: q,
@@ -458,7 +458,7 @@ class _ProductPageState extends State<ProductPage> {
 
                         final snack = SnackBar(
                           duration: const Duration(seconds: 3),
-                          content: Text('Added ${_selectedQuantity} × ${widget.product.title} to cart'),
+                          content: Text('Added $_selectedQuantity × ${widget.product.title} to cart'),
                           action: SnackBarAction(
                             label: 'VIEW CART',
                             onPressed: () {

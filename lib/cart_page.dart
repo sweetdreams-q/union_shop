@@ -4,7 +4,7 @@ import 'package:union_shop/models/cart.dart';
 class CartPage extends StatelessWidget {
   const CartPage({super.key});
 
-  String _formatCurrency(double amount) => '£' + amount.toStringAsFixed(2);
+  String _formatCurrency(double amount) => '£${amount.toStringAsFixed(2)}';
 
   @override
   Widget build(BuildContext context) {
