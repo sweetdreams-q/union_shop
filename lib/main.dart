@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
+
 import 'package:union_shop/product_page.dart';
 import 'package:union_shop/models/product.dart';
 import 'package:union_shop/gallery_page.dart';
@@ -35,8 +37,41 @@ class UnionShopApp extends StatelessWidget {
   }
 }
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+  final PageController _pageController = PageController();
+  int _currentIndex = 0;
+  bool _isPlaying = true;
+  Timer? _timer;
+
+  final List<Map<String, String>> slides = [
+    {
+      'image': 'https://shop.upsu.net/cdn/shop/files/PortsmouthCityPostcard2_1024x1024@2x.jpg?v=1752232561',
+      'title': 'Placeholder Hero Title',
+      'subtitle': "This is placeholder text for the hero section.",
+      'button': 'BROWSE PRODUCTS',
+    },
+    {
+      'image': 'https://picsum.photos/1200/800?image=1067',
+      'title': 'Second Slide Title',
+      'subtitle': 'Second slide placeholder description.',
+      'button': 'ACTION 2',
+    },
+    {
+      'image': 'https://picsum.photos/1200/800?image=1015',
+      'title': 'Third Slide Title',
+      'subtitle': 'Third slide placeholder description.',
+      'button': 'ACTION 3',
+    },
+  ];
 
   void navigateToHome(BuildContext context) {
     Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
@@ -95,9 +130,24 @@ class HomeScreen extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  void initState() {
+    super.initState();
+    _timer = Timer.periodic(const Duration(seconds: 4), (_) {
+      if (!_isPlaying) return;
+      final next = (_currentIndex + 1) % slides.length;
+      _pageController.animateToPage(next, duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
+    });
+  }
 
+  @override
+  void dispose() {
+    _timer?.cancel();
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
       endDrawer: ResponsiveHeader.buildDrawer(
@@ -124,31 +174,35 @@ class HomeScreen extends StatelessWidget {
               onOpenDrawer: (c) => scaffoldKey.currentState?.openEndDrawer(),
             ),
 
-            // Hero Section
+            // Hero Section - Slideshow
             SizedBox(
               height: 400,
               width: double.infinity,
               child: Stack(
                 children: [
-                  // Background image
-                  Positioned.fill(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: NetworkImage(
-                            'https://shop.upsu.net/cdn/shop/files/PortsmouthCityPostcard2_1024x1024@2x.jpg?v=1752232561',
+                  PageView.builder(
+                    controller: _pageController,
+                    itemCount: slides.length,
+                    onPageChanged: (idx) => setState(() => _currentIndex = idx),
+                    itemBuilder: (context, index) {
+                      final slide = slides[index];
+                      return Positioned.fill(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: NetworkImage(slide['image']!),
+                              fit: BoxFit.cover,
+                            ),
                           ),
-                          fit: BoxFit.cover,
+                          child: Container(
+                            color: Colors.black.withValues(alpha: 0.5),
+                          ),
                         ),
-                      ),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.black.withValues(alpha: 0.7),
-                        ),
-                      ),
-                    ),
+                      );
+                    },
                   ),
-                  // Content overlay
+
+                  // Content overlay for current slide
                   Positioned(
                     left: 24,
                     right: 24,
@@ -156,9 +210,9 @@ class HomeScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const Text(
-                          'Placeholder Hero Title',
-                          style: TextStyle(
+                        Text(
+                          slides[_currentIndex]['title']!,
+                          style: const TextStyle(
                             fontSize: 32,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
@@ -166,9 +220,9 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 16),
-                        const Text(
-                          "This is placeholder text for the hero section.",
-                          style: TextStyle(
+                        Text(
+                          slides[_currentIndex]['subtitle']!,
+                          style: const TextStyle(
                             fontSize: 20,
                             color: Colors.white,
                             height: 1.5,
@@ -176,8 +230,9 @@ class HomeScreen extends StatelessWidget {
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 32),
+                        // Button placeholder: only first slide navigates
                         ElevatedButton(
-                          onPressed: () => navigateToGallery(context),
+                          onPressed: _currentIndex == 0 ? () => navigateToGallery(context) : null,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF4d2963),
                             foregroundColor: Colors.white,
@@ -185,12 +240,35 @@ class HomeScreen extends StatelessWidget {
                               borderRadius: BorderRadius.zero,
                             ),
                           ),
-                          child: const Text(
-                            'BROWSE PRODUCTS',
-                            style: TextStyle(fontSize: 14, letterSpacing: 1),
+                          child: Text(
+                            slides[_currentIndex]['button']!,
+                            style: const TextStyle(fontSize: 14, letterSpacing: 1),
                           ),
                         ),
                       ],
+                    ),
+                  ),
+
+                  // Bottom-center navigation bar
+                  Positioned(
+                    bottom: 24,
+                    left: 0,
+                    right: 0,
+                    child: Center(
+                      child: SliderNavigationBar(
+                        length: slides.length,
+                        index: _currentIndex,
+                        isPlaying: _isPlaying,
+                        onPrev: () {
+                          final prev = (_currentIndex - 1 + slides.length) % slides.length;
+                          _pageController.animateToPage(prev, duration: const Duration(milliseconds: 400), curve: Curves.easeInOut);
+                        },
+                        onNext: () {
+                          final next = (_currentIndex + 1) % slides.length;
+                          _pageController.animateToPage(next, duration: const Duration(milliseconds: 400), curve: Curves.easeInOut);
+                        },
+                        onTogglePlay: () => setState(() => _isPlaying = !_isPlaying),
+                      ),
                     ),
                   ),
                 ],
@@ -309,6 +387,96 @@ class ProductCard extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+/// The control that looks like your screenshot
+class SliderNavigationBar extends StatelessWidget {
+  final int length;
+  final int index;
+  final VoidCallback onPrev;
+  final VoidCallback onNext;
+  final VoidCallback onTogglePlay;
+  final bool isPlaying;
+
+  const SliderNavigationBar({
+    super.key,
+    required this.length,
+    required this.index,
+    required this.onPrev,
+    required this.onNext,
+    required this.onTogglePlay,
+    required this.isPlaying,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Main gray bar with arrows + dots
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          decoration: BoxDecoration(
+            color: Colors.grey[800],
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              IconButton(
+                iconSize: 20,
+                padding: EdgeInsets.zero,
+                onPressed: onPrev,
+                icon: const Icon(Icons.chevron_left, color: Colors.white70),
+              ),
+              const SizedBox(width: 4),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: List.generate(length, (i) {
+                  final bool selected = i == index;
+                  return Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 3),
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      width: 8,
+                      height: 8,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: selected ? Colors.white : Colors.white54,
+                      ),
+                    ),
+                  );
+                }),
+              ),
+              const SizedBox(width: 4),
+              IconButton(
+                iconSize: 20,
+                padding: EdgeInsets.zero,
+                onPressed: onNext,
+                icon: const Icon(Icons.chevron_right, color: Colors.white70),
+              ),
+            ],
+          ),
+        ),
+
+        const SizedBox(width: 8),
+
+        // Separate square pause button
+        Container(
+          width: 40,
+          height: 40,
+          color: Colors.grey[800],
+          child: IconButton(
+            iconSize: 20,
+            onPressed: onTogglePlay,
+            icon: Icon(
+              isPlaying ? Icons.pause : Icons.play_arrow,
+              color: Colors.white70,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
