@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:union_shop/models/product.dart';
 import 'package:union_shop/product_page.dart';
+import 'package:union_shop/widgets/responsive_header.dart';
+import 'package:union_shop/about_us_page.dart';
+import 'package:union_shop/search_page.dart';
+import 'package:union_shop/cart_page.dart';
 
 class SalePage extends StatelessWidget {
   const SalePage({super.key});
@@ -9,10 +13,18 @@ class SalePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final saleProducts = sampleProducts.where((p) => p.onSale).toList();
 
+    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF4d2963),
-        title: const Text('Sale'),
+      key: scaffoldKey,
+      endDrawer: ResponsiveHeader.buildDrawer(
+        context,
+        onHome: (c) => Navigator.pushNamedAndRemoveUntil(c, '/', (route) => false),
+        onAbout: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const AboutUsPage())),
+        onSearch: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const SearchPage())),
+        onProfile: (c) => {},
+        onCart: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const CartPage())),
+        onSale: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const SalePage())),
       ),
       body: SingleChildScrollView(
         child: Column(

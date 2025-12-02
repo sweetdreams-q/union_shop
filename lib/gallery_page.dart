@@ -6,6 +6,7 @@ import 'package:union_shop/about_us_page.dart';
 import 'package:union_shop/cart_page.dart';
 import 'package:union_shop/search_page.dart';
 import 'package:union_shop/sale_page.dart';
+import 'package:union_shop/widgets/responsive_header.dart';
 
 class GalleryPage extends StatelessWidget {
   const GalleryPage({super.key});
@@ -52,248 +53,32 @@ class GalleryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isNarrow = MediaQuery.of(context).size.width < 420;
+    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     return Scaffold(
+      key: scaffoldKey,
+      endDrawer: ResponsiveHeader.buildDrawer(
+        context,
+        onHome: (c) => navigateToHome(c),
+        onAbout: (c) => navigateToAboutUs(c),
+        onSearch: (c) => navigateToSearch(c),
+        onProfile: (c) => placeholderCallbackForButtons(),
+        onCart: (c) => navigateToCart(c),
+        onSale: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const SalePage())),
+        onGallery: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const GalleryPage())),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Header (uses SafeArea so icons are not clipped on small devices)
-            SafeArea(
-              child: Container(
-                color: Colors.white,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // Top banner
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (_) => const SalePage()),
-                        );
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        color: const Color(0xFF4d2963),
-                        child: const Text(
-                          'BIG SALE! OUR ESSENTIAL RANGE HAS DROPPED IN PRICE! OVER 20% OFF! COME GRAB YOURS WHILE STOCK LASTS!',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.white, fontSize: 16),
-                        ),
-                      ),
-                    ),
-                    // Main header row
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                      child: Row(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              navigateToHome(context);
-                            },
-                            child: Image.network(
-                              'https://shop.upsu.net/cdn/shop/files/upsu_300x300.png?v=1614735854',
-                              height: 18,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Container(
-                                  color: Colors.grey[300],
-                                  width: 18,
-                                  height: 18,
-                                  child: const Center(
-                                    child: Icon(Icons.image_not_supported,
-                                        color: Colors.grey),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                          const Spacer(),
-                          ConstrainedBox(
-                            constraints: const BoxConstraints(maxWidth: 600),
-                            child: isNarrow
-                                ? Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      IconButton(
-                                        icon: const Icon(
-                                          Icons.home_outlined,
-                                          size: 18,
-                                          color: Colors.grey,
-                                        ),
-                                        padding: const EdgeInsets.all(8),
-                                        constraints: const BoxConstraints(
-                                          minWidth: 32,
-                                          minHeight: 32,
-                                        ),
-                                        onPressed: () => navigateToHome(context),
-                                      ),
-                                      IconButton(
-                                        icon: const Icon(
-                                          Icons.search,
-                                          size: 18,
-                                          color: Colors.grey,
-                                        ),
-                                        padding: const EdgeInsets.all(8),
-                                        constraints: const BoxConstraints(
-                                          minWidth: 32,
-                                          minHeight: 32,
-                                        ),
-                                        onPressed: () => navigateToSearch(context),
-                                      ),
-                                      IconButton(
-                                        icon: const Icon(
-                                          Icons.shopping_bag_outlined,
-                                          size: 18,
-                                          color: Colors.grey,
-                                        ),
-                                        padding: const EdgeInsets.all(8),
-                                        constraints: const BoxConstraints(
-                                          minWidth: 32,
-                                          minHeight: 32,
-                                        ),
-                                        onPressed: () => navigateToCart(context),
-                                      ),
-                                      PopupMenuButton<String>(
-                                        padding: const EdgeInsets.all(4),
-                                        icon: const Icon(Icons.more_vert, size: 18, color: Colors.grey),
-                                        onSelected: (value) {
-                                          switch (value) {
-                                            case 'about':
-                                              navigateToAboutUs(context);
-                                              break;
-                                            case 'profile':
-                                              placeholderCallbackForButtons();
-                                              break;
-                                            case 'menu':
-                                              placeholderCallbackForButtons();
-                                              break;
-                                            case 'sale':
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(builder: (_) => const SalePage()),
-                                              );
-                                              break;
-                                          }
-                                        },
-                                        itemBuilder: (context) => [
-                                          const PopupMenuItem(value: 'about', child: Text('About')),
-                                          const PopupMenuItem(value: 'profile', child: Text('Profile')),
-                                          const PopupMenuItem(value: 'menu', child: Text('Menu')),
-                                          const PopupMenuItem(value: 'sale', child: Text('Sale')),
-                                        ],
-                                      ),
-                                    ],
-                                  )
-                                : Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      IconButton(
-                                        icon: const Icon(
-                                          Icons.home_outlined,
-                                          size: 18,
-                                          color: Colors.grey,
-                                        ),
-                                        padding: const EdgeInsets.all(8),
-                                        constraints: const BoxConstraints(
-                                          minWidth: 32,
-                                          minHeight: 32,
-                                        ),
-                                        onPressed: () => navigateToHome(context),
-                                      ),
-                                      IconButton(
-                                        icon: const Icon(
-                                          Icons.info_outline,
-                                          size: 18,
-                                          color: Colors.grey,
-                                        ),
-                                        padding: const EdgeInsets.all(8),
-                                        constraints: const BoxConstraints(
-                                          minWidth: 32,
-                                          minHeight: 32,
-                                        ),
-                                        onPressed: () => navigateToAboutUs(context),
-                                      ),
-                                      IconButton(
-                                        icon: const Icon(
-                                          Icons.search,
-                                          size: 18,
-                                          color: Colors.grey,
-                                        ),
-                                        padding: const EdgeInsets.all(8),
-                                        constraints: const BoxConstraints(
-                                          minWidth: 32,
-                                          minHeight: 32,
-                                        ),
-                                        onPressed: () => navigateToSearch(context),
-                                      ),
-                                      IconButton(
-                                        icon: const Icon(
-                                          Icons.person_outline,
-                                          size: 18,
-                                          color: Colors.grey,
-                                        ),
-                                        padding: const EdgeInsets.all(8),
-                                        constraints: const BoxConstraints(
-                                          minWidth: 32,
-                                          minHeight: 32,
-                                        ),
-                                        onPressed: placeholderCallbackForButtons,
-                                      ),
-                                      IconButton(
-                                        icon: const Icon(
-                                          Icons.shopping_bag_outlined,
-                                          size: 18,
-                                          color: Colors.grey,
-                                        ),
-                                        padding: const EdgeInsets.all(8),
-                                        constraints: const BoxConstraints(
-                                          minWidth: 32,
-                                          minHeight: 32,
-                                        ),
-                                        onPressed: () => navigateToCart(context),
-                                      ),
-                                      IconButton(
-                                        icon: const Icon(
-                                          Icons.menu,
-                                          size: 18,
-                                          color: Colors.grey,
-                                        ),
-                                        padding: const EdgeInsets.all(8),
-                                        constraints: const BoxConstraints(
-                                          minWidth: 32,
-                                          minHeight: 32,
-                                        ),
-                                        onPressed: placeholderCallbackForButtons,
-                                      ),
-                                      IconButton(
-                                        icon: const Icon(
-                                          Icons.local_offer,
-                                          size: 18,
-                                          color: Colors.grey,
-                                        ),
-                                        padding: const EdgeInsets.all(8),
-                                        constraints: const BoxConstraints(
-                                          minWidth: 32,
-                                          minHeight: 32,
-                                        ),
-                                        onPressed: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(builder: (_) => const SalePage()),
-                                          );
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            // Responsive header
+            ResponsiveHeader(
+              onHome: (c) => navigateToHome(c),
+              onAbout: (c) => navigateToAboutUs(c),
+              onSearch: (c) => navigateToSearch(c),
+              onProfile: (c) => placeholderCallbackForButtons(),
+              onCart: (c) => navigateToCart(c),
+              onSale: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const SalePage())),
+              onGallery: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const GalleryPage())),
+              onOpenDrawer: (c) => scaffoldKey.currentState?.openEndDrawer(),
             ),
 
             // Products Gallery Section
