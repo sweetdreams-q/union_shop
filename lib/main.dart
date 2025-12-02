@@ -55,15 +55,15 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Map<String, String>> slides = [
     {
       'image': 'https://shop.upsu.net/cdn/shop/files/PortsmouthCityPostcard2_1024x1024@2x.jpg?v=1752232561',
-      'title': 'Placeholder Hero Title',
-      'subtitle': "This is placeholder text for the hero section.",
+      'title': 'Welcome to Union Shop',
+      'subtitle': "Discover exclusive university merchandise and essentials.",
       'button': 'BROWSE PRODUCTS',
     },
     {
       'image': 'https://picsum.photos/1200/800?image=1067',
-      'title': 'Second Slide Title',
-      'subtitle': 'Second slide placeholder description.',
-      'button': 'ACTION 2',
+      'title': 'About us',
+      'subtitle': 'Learn more about our mission to support students and the university community.',
+      'button': 'Learn More',
     },
     {
       'image': 'https://picsum.photos/1200/800?image=1015',
