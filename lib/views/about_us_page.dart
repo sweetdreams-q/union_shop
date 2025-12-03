@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:union_shop/widgets/footer.dart';
-import 'package:union_shop/cart_page.dart';
-import 'package:union_shop/search_page.dart';
-import 'package:union_shop/sale_page.dart';
+import 'package:union_shop/views/cart_page.dart';
+import 'package:union_shop/views/search_page.dart';
+import 'package:union_shop/views/sale_page.dart';
 import 'package:union_shop/widgets/responsive_header.dart';
 
 class AboutUsPage extends StatelessWidget {

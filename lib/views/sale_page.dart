@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:union_shop/models/product.dart';
-import 'package:union_shop/product_page.dart';
+import 'package:union_shop/views/product_page.dart';
 import 'package:union_shop/widgets/responsive_header.dart';
-import 'package:union_shop/about_us_page.dart';
-import 'package:union_shop/search_page.dart';
-import 'package:union_shop/cart_page.dart';
+import 'package:union_shop/views/about_us_page.dart';
+import 'package:union_shop/views/search_page.dart';
+import 'package:union_shop/views/cart_page.dart';
 
 class SalePage extends StatelessWidget {
   const SalePage({super.key});

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:union_shop/about_us_page.dart';
+import 'package:union_shop/views/about_us_page.dart';
 
 class AppFooter extends StatefulWidget {
   const AppFooter({super.key});

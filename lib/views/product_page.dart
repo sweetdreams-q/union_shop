@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:union_shop/models/product.dart';
 import 'package:union_shop/widgets/footer.dart';
-import 'package:union_shop/about_us_page.dart';
-import 'package:union_shop/sale_page.dart';
-import 'package:union_shop/search_page.dart';
-import 'package:union_shop/cart_page.dart';
+import 'package:union_shop/views/about_us_page.dart';
+import 'package:union_shop/views/sale_page.dart';
+import 'package:union_shop/views/search_page.dart';
+import 'package:union_shop/views/cart_page.dart';
 import 'package:union_shop/models/cart.dart';
 import 'package:union_shop/widgets/responsive_header.dart';
 
