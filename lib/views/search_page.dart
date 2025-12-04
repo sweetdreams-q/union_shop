@@ -52,6 +52,7 @@ class _SearchPageState extends State<SearchPage> {
         onCart: (c) => c.go('/cart'),
         onSale: (c) => c.go('/sale'),
         onGallery: (c) => c.go('/gallery'),
+        onPrintShack: (c) => c.go('/print-shack'),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -64,6 +65,7 @@ class _SearchPageState extends State<SearchPage> {
               onCart: (c) => c.go('/cart'),
               onSale: (c) => c.go('/sale'),
               onGallery: (c) => c.go('/gallery'),
+              onPrintShack: (c) => c.go('/print-shack'),
               onOpenDrawer: (c) => scaffoldKey.currentState?.openEndDrawer(),
             ),
             Container(

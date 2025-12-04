@@ -198,6 +198,7 @@ class _HomeScreenState extends State<HomeScreen> {
         onCart: (c) => navigateToCart(c),
         onSale: (c) => navigateToSale(c),
         onGallery: (c) => navigateToGallery(c),
+        onPrintShack: (c) => navigateToPrintShack(c),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -210,6 +211,7 @@ class _HomeScreenState extends State<HomeScreen> {
               onCart: (c) => navigateToCart(c),
               onSale: (c) => navigateToSale(c),
               onGallery: (c) => navigateToGallery(c),
+              onPrintShack: (c) => navigateToPrintShack(c),
               onOpenDrawer: (c) => scaffoldKey.currentState?.openEndDrawer(),
             ),
 

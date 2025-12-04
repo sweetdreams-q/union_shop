@@ -53,6 +53,7 @@ class _CartPageState extends State<CartPage> {
         onCart: (c) => {},
         onSale: (c) => navigateToSale(c),
         onGallery: (c) => navigateToGallery(c),
+        onPrintShack: (c) => c.go('/print-shack'),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -65,6 +66,7 @@ class _CartPageState extends State<CartPage> {
               onCart: (c) => {},
               onSale: (c) => navigateToSale(c),
               onGallery: (c) => navigateToGallery(c),
+              onPrintShack: (c) => c.go('/print-shack'),
               onOpenDrawer: (c) => scaffoldKey.currentState?.openEndDrawer(),
             ),
             Container(

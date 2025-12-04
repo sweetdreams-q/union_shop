@@ -136,6 +136,7 @@ class _PrintShackPageState extends State<PrintShackPage> {
         onCart: (c) => navigateToCart(c),
         onSale: (c) => navigateToSale(c),
         onGallery: (c) => navigateToGallery(c),
+        onPrintShack: (c) => {},
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -148,6 +149,7 @@ class _PrintShackPageState extends State<PrintShackPage> {
               onCart: (c) => navigateToCart(c),
               onSale: (c) => navigateToSale(c),
               onGallery: (c) => navigateToGallery(c),
+              onPrintShack: (c) => {},
               onOpenDrawer: (c) => scaffoldKey.currentState?.openEndDrawer(),
             ),
             Container(

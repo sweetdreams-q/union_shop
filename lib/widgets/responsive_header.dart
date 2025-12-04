@@ -10,6 +10,7 @@ class ResponsiveHeader extends StatelessWidget {
   final VoidCallbackWithContext onCart;
   final VoidCallbackWithContext onSale;
   final VoidCallbackWithContext? onGallery;
+  final VoidCallbackWithContext? onPrintShack;
   final bool showBanner;
   final VoidCallbackWithContext? onOpenDrawer;
 
@@ -22,6 +23,7 @@ class ResponsiveHeader extends StatelessWidget {
     required this.onCart,
     required this.onSale,
     this.onGallery,
+    this.onPrintShack,
     this.showBanner = true,
     this.onOpenDrawer,
   });
@@ -33,7 +35,8 @@ class ResponsiveHeader extends StatelessWidget {
       required VoidCallbackWithContext onProfile,
       required VoidCallbackWithContext onCart,
       required VoidCallbackWithContext onSale,
-      VoidCallbackWithContext? onGallery}) {
+      VoidCallbackWithContext? onGallery,
+      VoidCallbackWithContext? onPrintShack}) {
     return Drawer(
       child: SafeArea(
         child: ListView(
@@ -56,8 +59,14 @@ class ResponsiveHeader extends StatelessWidget {
             if (onGallery != null)
               ListTile(
                 leading: const Icon(Icons.grid_view),
-                title: const Text('Gallery'),
+                title: const Text('Collections'),
                 onTap: () => onGallery(context),
+              ),
+            if (onPrintShack != null)
+              ListTile(
+                leading: const Icon(Icons.print),
+                title: const Text('The Print Shack'),
+                onTap: () => onPrintShack(context),
               ),
             ListTile(
               leading: const Icon(Icons.info_outline),
@@ -189,6 +198,30 @@ class ResponsiveHeader extends StatelessWidget {
                                   style: TextStyle(fontSize: 14),
                                 ),
                               ),
+                              if (onGallery != null)
+                                TextButton(
+                                  onPressed: () => onGallery!(context),
+                                  style: TextButton.styleFrom(
+                                    foregroundColor: Colors.grey[700],
+                                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                  ),
+                                  child: const Text(
+                                    'Collections',
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                ),
+                              if (onPrintShack != null)
+                                TextButton(
+                                  onPressed: () => onPrintShack!(context),
+                                  style: TextButton.styleFrom(
+                                    foregroundColor: Colors.grey[700],
+                                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                  ),
+                                  child: const Text(
+                                    'The Print Shack',
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                ),
                               TextButton(
                                 onPressed: () => onAbout(context),
                                 style: TextButton.styleFrom(

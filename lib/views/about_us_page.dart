@@ -37,6 +37,7 @@ class AboutUsPage extends StatelessWidget {
         onCart: (c) => navigateToCart(c),
         onSale: (c) => c.go('/sale'),
         onGallery: (c) => c.go('/gallery'),
+        onPrintShack: (c) => c.go('/print-shack'),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -49,6 +50,7 @@ class AboutUsPage extends StatelessWidget {
               onCart: (c) => navigateToCart(c),
               onSale: (c) => c.go('/sale'),
               onGallery: (c) => c.go('/gallery'),
+              onPrintShack: (c) => c.go('/print-shack'),
               onOpenDrawer: (c) => scaffoldKey.currentState?.openEndDrawer(),
             ),
 
