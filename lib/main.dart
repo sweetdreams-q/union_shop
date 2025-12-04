@@ -64,13 +64,13 @@ class _HomeScreenState extends State<HomeScreen> {
       'image': 'https://picsum.photos/1200/800?image=1067',
       'title': 'About us',
       'subtitle': 'Learn more about our mission to support students and the university community.',
-      'button': 'Learn More',
+      'button': 'LEARN MORE',
     },
     {
       'image': 'https://picsum.photos/1200/800?image=1015',
-      'title': 'Third Slide Title',
-      'subtitle': 'Third slide placeholder description.',
-      'button': 'ACTION 3',
+      'title': 'Personalize your merch',
+      'subtitle': 'Get your custom prints and apparel at The Print Shack.',
+      'button': 'THE PRINT SHACK',
     },
   ];
 
