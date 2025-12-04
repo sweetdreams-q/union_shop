@@ -20,7 +20,4 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/product_images/product1.png
-    - assets/product_images/product2.png
-    - assets/product_images/product3.png
-    - assets/product_images/product4.png
+    - assets/product_images/
