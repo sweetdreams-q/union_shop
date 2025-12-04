@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:union_shop/models/product.dart';
 import 'package:union_shop/views/product_page.dart';
 import 'package:union_shop/widgets/responsive_header.dart';
+import 'package:union_shop/widgets/footer.dart';
 import 'package:union_shop/views/about_us_page.dart';
 import 'package:union_shop/views/search_page.dart';
 import 'package:union_shop/views/cart_page.dart';
+import 'package:union_shop/views/gallery_page.dart';
 
 class SalePage extends StatelessWidget {
   const SalePage({super.key});
@@ -24,11 +26,22 @@ class SalePage extends StatelessWidget {
         onSearch: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const SearchPage())),
         onProfile: (c) => {},
         onCart: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const CartPage())),
-        onSale: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const SalePage())),
+        onSale: (c) => {},
+        onGallery: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const GalleryPage())),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
+            ResponsiveHeader(
+              onHome: (c) => Navigator.pushNamedAndRemoveUntil(c, '/', (route) => false),
+              onAbout: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const AboutUsPage())),
+              onSearch: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const SearchPage())),
+              onProfile: (c) => {},
+              onCart: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const CartPage())),
+              onSale: (c) => {},
+              onGallery: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const GalleryPage())),
+              onOpenDrawer: (c) => scaffoldKey.currentState?.openEndDrawer(),
+            ),
             Container(
               width: double.infinity,
               color: const Color(0xFFf6e8fb),
@@ -59,6 +72,7 @@ class SalePage extends StatelessWidget {
                 children: saleProducts.map((p) => _SaleProductTile(product: p)).toList(),
               ),
             ),
+            const AppFooter(),
           ],
         ),
       ),

@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:union_shop/models/product.dart';
 import 'package:union_shop/views/product_page.dart';
+import 'package:union_shop/widgets/responsive_header.dart';
+import 'package:union_shop/widgets/footer.dart';
+import 'package:union_shop/views/about_us_page.dart';
+import 'package:union_shop/views/cart_page.dart';
+import 'package:union_shop/views/sale_page.dart';
+import 'package:union_shop/views/gallery_page.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -10,6 +16,7 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final TextEditingController _controller = TextEditingController();
   String _query = '';
 
@@ -39,34 +46,69 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF4d2963),
-        title: SizedBox(
-          height: 40,
-          child: TextField(
-            controller: _controller,
-            autofocus: true,
-            decoration: const InputDecoration(
-              hintText: 'Search products...',
-              filled: true,
-              fillColor: Colors.white,
-              border: OutlineInputBorder(borderSide: BorderSide.none),
-              contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            ),
-            onChanged: (v) => setState(() => _query = v),
-          ),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.clear),
-            onPressed: () {
-              _controller.clear();
-              setState(() => _query = '');
-            },
-          ),
-        ],
+      key: scaffoldKey,
+      endDrawer: ResponsiveHeader.buildDrawer(
+        context,
+        onHome: (c) => Navigator.pushNamedAndRemoveUntil(c, '/', (route) => false),
+        onAbout: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const AboutUsPage())),
+        onSearch: (c) => {},
+        onProfile: (c) => {},
+        onCart: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const CartPage())),
+        onSale: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const SalePage())),
+        onGallery: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const GalleryPage())),
       ),
-      body: _buildBody(context),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            ResponsiveHeader(
+              onHome: (c) => Navigator.pushNamedAndRemoveUntil(c, '/', (route) => false),
+              onAbout: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const AboutUsPage())),
+              onSearch: (c) => {},
+              onProfile: (c) => {},
+              onCart: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const CartPage())),
+              onSale: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const SalePage())),
+              onGallery: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const GalleryPage())),
+              onOpenDrawer: (c) => scaffoldKey.currentState?.openEndDrawer(),
+            ),
+            Container(
+              color: Colors.white,
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  TextField(
+                    controller: _controller,
+                    autofocus: true,
+                    decoration: InputDecoration(
+                      hintText: 'Search products...',
+                      filled: true,
+                      fillColor: Colors.grey[100],
+                      prefixIcon: const Icon(Icons.search),
+                      suffixIcon: _query.isNotEmpty
+                          ? IconButton(
+                              icon: const Icon(Icons.clear),
+                              onPressed: () {
+                                _controller.clear();
+                                setState(() => _query = '');
+                              },
+                            )
+                          : null,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide.none,
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    ),
+                    onChanged: (v) => setState(() => _query = v),
+                  ),
+                  const SizedBox(height: 24),
+                  _buildBody(context),
+                ],
+              ),
+            ),
+            const AppFooter(),
+          ],
+        ),
+      ),
     );
   }
 
@@ -75,18 +117,26 @@ class _SearchPageState extends State<SearchPage> {
     if (_query.isEmpty) {
       return const Padding(
         padding: EdgeInsets.all(24.0),
-        child: Text('Type to search products (searches as you type).'),
+        child: Text(
+          'Type to search products (searches as you type).',
+          style: TextStyle(color: Colors.grey),
+        ),
       );
     }
 
     if (results.isEmpty) {
       return const Padding(
         padding: EdgeInsets.all(24.0),
-        child: Text('No products match your search.'),
+        child: Text(
+          'No products match your search.',
+          style: TextStyle(color: Colors.grey),
+        ),
       );
     }
 
     return ListView.separated(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
       itemCount: results.length,
       separatorBuilder: (_, __) => const Divider(height: 1),
       itemBuilder: (context, index) {
