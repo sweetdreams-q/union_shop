@@ -11,6 +11,7 @@ import 'package:union_shop/views/sale_page.dart';
 import 'package:union_shop/models/cart.dart';
 import 'package:union_shop/views/cart_page.dart';
 import 'package:union_shop/widgets/responsive_header.dart';
+import 'package:union_shop/views/print_shack_page.dart';
 
 void main() {
   runApp(const UnionShopApp());
@@ -122,6 +123,13 @@ class _HomeScreenState extends State<HomeScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const CartPage()),
+    );
+  }
+
+  void navigateToPrintShack(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const PrintShackPage()),
     );
   }
 
@@ -258,9 +266,15 @@ class _HomeScreenState extends State<HomeScreen> {
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 32),
-                        // Button placeholder: only first slide navigates
+                        // Button: different actions based on slide
                         ElevatedButton(
-                          onPressed: _currentIndex == 0 ? () => navigateToGallery(context) : null,
+                          onPressed: _currentIndex == 0
+                              ? () => navigateToGallery(context)
+                              : _currentIndex == 1
+                                  ? () => navigateToAboutUs(context)
+                                  : _currentIndex == 2
+                                      ? () => navigateToPrintShack(context)
+                                      : null,
                           style: ButtonStyle(
                             backgroundColor: WidgetStateProperty.all(const Color(0xFF4d2963)),
                             foregroundColor: WidgetStateProperty.all(Colors.white),
