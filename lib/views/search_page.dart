@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:union_shop/models/product.dart';
-import 'package:union_shop/views/product_page.dart';
 import 'package:union_shop/widgets/responsive_header.dart';
 import 'package:union_shop/widgets/footer.dart';
-import 'package:union_shop/views/about_us_page.dart';
-import 'package:union_shop/views/cart_page.dart';
-import 'package:union_shop/views/sale_page.dart';
-import 'package:union_shop/views/gallery_page.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -49,25 +45,25 @@ class _SearchPageState extends State<SearchPage> {
       key: scaffoldKey,
       endDrawer: ResponsiveHeader.buildDrawer(
         context,
-        onHome: (c) => Navigator.pushNamedAndRemoveUntil(c, '/', (route) => false),
-        onAbout: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const AboutUsPage())),
+        onHome: (c) => c.go('/'),
+        onAbout: (c) => c.go('/about'),
         onSearch: (c) => {},
         onProfile: (c) => {},
-        onCart: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const CartPage())),
-        onSale: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const SalePage())),
-        onGallery: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const GalleryPage())),
+        onCart: (c) => c.go('/cart'),
+        onSale: (c) => c.go('/sale'),
+        onGallery: (c) => c.go('/gallery'),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             ResponsiveHeader(
-              onHome: (c) => Navigator.pushNamedAndRemoveUntil(c, '/', (route) => false),
-              onAbout: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const AboutUsPage())),
+              onHome: (c) => c.go('/'),
+              onAbout: (c) => c.go('/about'),
               onSearch: (c) => {},
               onProfile: (c) => {},
-              onCart: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const CartPage())),
-              onSale: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const SalePage())),
-              onGallery: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const GalleryPage())),
+              onCart: (c) => c.go('/cart'),
+              onSale: (c) => c.go('/sale'),
+              onGallery: (c) => c.go('/gallery'),
               onOpenDrawer: (c) => scaffoldKey.currentState?.openEndDrawer(),
             ),
             Container(
@@ -156,10 +152,7 @@ class _SearchPageState extends State<SearchPage> {
               : Text(p.title),
           subtitle: Text(p.price),
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => ProductPage(product: p)),
-            );
+            context.go('/product/${p.id}');
           },
         );
       },

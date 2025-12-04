@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:union_shop/models/product.dart';
-import 'package:union_shop/views/product_page.dart';
 import 'package:union_shop/widgets/responsive_header.dart';
 import 'package:union_shop/widgets/footer.dart';
-import 'package:union_shop/views/about_us_page.dart';
-import 'package:union_shop/views/search_page.dart';
-import 'package:union_shop/views/cart_page.dart';
-import 'package:union_shop/views/gallery_page.dart';
 
 class SalePage extends StatelessWidget {
   const SalePage({super.key});
@@ -21,25 +17,25 @@ class SalePage extends StatelessWidget {
       key: scaffoldKey,
       endDrawer: ResponsiveHeader.buildDrawer(
         context,
-        onHome: (c) => Navigator.pushNamedAndRemoveUntil(c, '/', (route) => false),
-        onAbout: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const AboutUsPage())),
-        onSearch: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const SearchPage())),
+        onHome: (c) => c.go('/'),
+        onAbout: (c) => c.go('/about'),
+        onSearch: (c) => c.go('/search'),
         onProfile: (c) => {},
-        onCart: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const CartPage())),
+        onCart: (c) => c.go('/cart'),
         onSale: (c) => {},
-        onGallery: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const GalleryPage())),
+        onGallery: (c) => c.go('/gallery'),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             ResponsiveHeader(
-              onHome: (c) => Navigator.pushNamedAndRemoveUntil(c, '/', (route) => false),
-              onAbout: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const AboutUsPage())),
-              onSearch: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const SearchPage())),
+              onHome: (c) => c.go('/'),
+              onAbout: (c) => c.go('/about'),
+              onSearch: (c) => c.go('/search'),
               onProfile: (c) => {},
-              onCart: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const CartPage())),
+              onCart: (c) => c.go('/cart'),
               onSale: (c) => {},
-              onGallery: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const GalleryPage())),
+              onGallery: (c) => c.go('/gallery'),
               onOpenDrawer: (c) => scaffoldKey.currentState?.openEndDrawer(),
             ),
             Container(
@@ -125,10 +121,7 @@ class _SaleProductTile extends StatelessWidget {
           style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF4d2963)),
           child: const Text('View'),
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => ProductPage(product: product)),
-            );
+            context.go('/product/${product.id}');
           },
         ),
       ),

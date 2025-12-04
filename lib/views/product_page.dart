@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:union_shop/models/product.dart';
-import 'package:union_shop/widgets/footer.dart';
-import 'package:union_shop/views/about_us_page.dart';
-import 'package:union_shop/views/sale_page.dart';
-import 'package:union_shop/views/search_page.dart';
-import 'package:union_shop/views/cart_page.dart';
 import 'package:union_shop/models/cart.dart';
+import 'package:union_shop/widgets/footer.dart';
 import 'package:union_shop/widgets/responsive_header.dart';
 
 class ProductPage extends StatefulWidget {
@@ -31,29 +28,21 @@ class _ProductPageState extends State<ProductPage> {
   }
 
   void navigateToHome(BuildContext context) {
-    Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+    context.go('/');
   }
 
   void navigateToAboutUs(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const AboutUsPage()),
-    );
+    context.go('/about');
   }
 
   void navigateToSearch(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const SearchPage()),
-    );
+    context.go('/search');
   }
 
   void navigateToCart(BuildContext context) {
     final messenger = ScaffoldMessenger.of(context);
     messenger.hideCurrentSnackBar();
-    Navigator.of(context, rootNavigator: true).push(
-      MaterialPageRoute(builder: (_) => const CartPage()),
-    );
+    context.go('/cart');
   }
 
   void placeholderCallbackForButtons() {}
@@ -69,7 +58,8 @@ class _ProductPageState extends State<ProductPage> {
         onSearch: (c) => navigateToSearch(c),
         onProfile: (c) => placeholderCallbackForButtons(),
         onCart: (c) => navigateToCart(c),
-        onSale: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const SalePage())),
+        onSale: (c) => c.go('/sale'),
+        onGallery: (c) => c.go('/gallery'),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -80,7 +70,8 @@ class _ProductPageState extends State<ProductPage> {
               onSearch: (c) => navigateToSearch(c),
               onProfile: (c) => placeholderCallbackForButtons(),
               onCart: (c) => navigateToCart(c),
-              onSale: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const SalePage())),
+              onSale: (c) => c.go('/sale'),
+              onGallery: (c) => c.go('/gallery'),
               onOpenDrawer: (c) => scaffoldKey.currentState?.openEndDrawer(),
             ),
             Container(
@@ -383,9 +374,7 @@ class _ProductPageState extends State<ProductPage> {
                 action: SnackBarAction(
                   label: 'VIEW CART',
                   onPressed: () {
-                    Navigator.of(context, rootNavigator: true).push(
-                      MaterialPageRoute(builder: (_) => const CartPage()),
-                    );
+                    context.go('/cart');
                   },
                 ),
               );

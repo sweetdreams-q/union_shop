@@ -1,43 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:union_shop/models/product.dart';
-import 'package:union_shop/views/product_page.dart';
 import 'package:union_shop/widgets/footer.dart';
-import 'package:union_shop/views/about_us_page.dart';
-import 'package:union_shop/views/cart_page.dart';
-import 'package:union_shop/views/search_page.dart';
-import 'package:union_shop/views/sale_page.dart';
 import 'package:union_shop/widgets/responsive_header.dart';
 
 class GalleryPage extends StatelessWidget {
   const GalleryPage({super.key});
 
   void navigateToHome(BuildContext context) {
-    Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+    context.go('/');
   }
 
   void navigateToProduct(BuildContext context, Product product) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ProductPage(product: product),
-      ),
-    );
+    context.go('/product/${product.id}');
   }
 
   void navigateToAboutUs(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const AboutUsPage(),
-      ),
-    );
+    context.go('/about');
   }
 
   void navigateToSearch(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const SearchPage()),
-    );
+    context.go('/search');
   }
 
   void placeholderCallbackForButtons() {
@@ -45,10 +28,7 @@ class GalleryPage extends StatelessWidget {
   }
 
   void navigateToCart(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const CartPage()),
-    );
+    context.go('/cart');
   }
 
   @override
@@ -63,8 +43,8 @@ class GalleryPage extends StatelessWidget {
         onSearch: (c) => navigateToSearch(c),
         onProfile: (c) => placeholderCallbackForButtons(),
         onCart: (c) => navigateToCart(c),
-        onSale: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const SalePage())),
-        onGallery: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const GalleryPage())),
+        onSale: (c) => c.go('/sale'),
+        onGallery: (c) => {},
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -76,8 +56,8 @@ class GalleryPage extends StatelessWidget {
               onSearch: (c) => navigateToSearch(c),
               onProfile: (c) => placeholderCallbackForButtons(),
               onCart: (c) => navigateToCart(c),
-              onSale: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const SalePage())),
-              onGallery: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const GalleryPage())),
+              onSale: (c) => c.go('/sale'),
+              onGallery: (c) => {},
               onOpenDrawer: (c) => scaffoldKey.currentState?.openEndDrawer(),
             ),
 
@@ -143,12 +123,7 @@ class GalleryProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ProductPage(product: product),
-          ),
-        );
+        context.go('/product/${product.id}');
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

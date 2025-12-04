@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:union_shop/models/cart.dart';
 import 'package:union_shop/widgets/responsive_header.dart';
 import 'package:union_shop/widgets/footer.dart';
-import 'package:union_shop/views/about_us_page.dart';
-import 'package:union_shop/views/search_page.dart';
-import 'package:union_shop/views/sale_page.dart';
-import 'package:union_shop/views/gallery_page.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({super.key});
@@ -18,35 +15,23 @@ class _CartPageState extends State<CartPage> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   void navigateToHome(BuildContext context) {
-    Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+    context.go('/');
   }
 
   void navigateToAboutUs(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const AboutUsPage()),
-    );
+    context.go('/about');
   }
 
   void navigateToSearch(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const SearchPage()),
-    );
+    context.go('/search');
   }
 
   void navigateToSale(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const SalePage()),
-    );
+    context.go('/sale');
   }
 
   void navigateToGallery(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const GalleryPage()),
-    );
+    context.go('/gallery');
   }
 
   void placeholderCallbackForButtons() {}

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:go_router/go_router.dart';
 
 import 'package:union_shop/views/product_page.dart';
 import 'package:union_shop/models/product.dart';
@@ -17,6 +18,65 @@ void main() {
   runApp(const UnionShopApp());
 }
 
+// GoRouter configuration
+final GoRouter _router = GoRouter(
+  initialLocation: '/',
+  errorBuilder: (context, state) => Scaffold(
+    body: Center(
+      child: Text('Page not found: ${state.uri}'),
+    ),
+  ),
+  routes: [
+    GoRoute(
+      path: '/',
+      name: 'home',
+      builder: (context, state) => const HomeScreen(),
+    ),
+    GoRoute(
+      path: '/about',
+      name: 'about',
+      builder: (context, state) => const AboutUsPage(),
+    ),
+    GoRoute(
+      path: '/gallery',
+      name: 'gallery',
+      builder: (context, state) => const GalleryPage(),
+    ),
+    GoRoute(
+      path: '/search',
+      name: 'search',
+      builder: (context, state) => const SearchPage(),
+    ),
+    GoRoute(
+      path: '/sale',
+      name: 'sale',
+      builder: (context, state) => const SalePage(),
+    ),
+    GoRoute(
+      path: '/cart',
+      name: 'cart',
+      builder: (context, state) => const CartPage(),
+    ),
+    GoRoute(
+      path: '/print-shack',
+      name: 'print-shack',
+      builder: (context, state) => const PrintShackPage(),
+    ),
+    GoRoute(
+      path: '/product/:id',
+      name: 'product',
+      builder: (context, state) {
+        final productId = state.pathParameters['id'] ?? '1';
+        final product = sampleProducts.firstWhere(
+          (p) => p.id == productId,
+          orElse: () => sampleProducts.first,
+        );
+        return ProductPage(product: product);
+      },
+    ),
+  ],
+);
+
 class UnionShopApp extends StatelessWidget {
   const UnionShopApp({super.key});
 
@@ -24,15 +84,13 @@ class UnionShopApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return CartProvider(
       cart: CartModel(),
-      child: MaterialApp(
-      title: 'Union Shop',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF4d2963)),
-      ),
-      home: const HomeScreen(),
-      // By default, the app starts at the '/' route, which is the HomeScreen
-      initialRoute: '/',
+      child: MaterialApp.router(
+        title: 'Union Shop',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF4d2963)),
+        ),
+        routerConfig: _router,
       ),
     );
   }
@@ -75,62 +133,35 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   void navigateToHome(BuildContext context) {
-    Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+    context.go('/');
   }
 
   void navigateToProduct(BuildContext context, Product product) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ProductPage(product: product),
-      ),
-    );
+    context.go('/product/${product.id}');
   }
 
   void navigateToGallery(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const GalleryPage(),
-      ),
-    );
+    context.go('/gallery');
   }
 
   void navigateToAboutUs(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const AboutUsPage(),
-      ),
-    );
+    context.go('/about');
   }
 
   void navigateToSearch(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const SearchPage()),
-    );
+    context.go('/search');
   }
 
   void navigateToSale(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const SalePage()),
-    );
+    context.go('/sale');
   }
 
   void navigateToCart(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const CartPage()),
-    );
+    context.go('/cart');
   }
 
   void navigateToPrintShack(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const PrintShackPage()),
-    );
+    context.go('/print-shack');
   }
 
   void placeholderCallbackForButtons() {
@@ -370,12 +401,7 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ProductPage(product: product),
-          ),
-        );
+        context.go('/product/${product.id}');
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

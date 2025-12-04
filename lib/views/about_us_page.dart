@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:union_shop/widgets/footer.dart';
-import 'package:union_shop/views/cart_page.dart';
-import 'package:union_shop/views/search_page.dart';
-import 'package:union_shop/views/sale_page.dart';
 import 'package:union_shop/widgets/responsive_header.dart';
 
 class AboutUsPage extends StatelessWidget {
   const AboutUsPage({super.key});
 
   void navigateToHome(BuildContext context) {
-    Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+    context.go('/');
   }
 
   void placeholderCallbackForButtons() {
@@ -17,17 +15,11 @@ class AboutUsPage extends StatelessWidget {
   }
 
   void navigateToCart(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => const CartPage()),
-    );
+    context.go('/cart');
   }
 
   void navigateToSearch(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const SearchPage()),
-    );
+    context.go('/search');
   }
 
   @override
@@ -39,22 +31,24 @@ class AboutUsPage extends StatelessWidget {
       endDrawer: ResponsiveHeader.buildDrawer(
         context,
         onHome: (c) => navigateToHome(c),
-        onAbout: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const AboutUsPage())),
+        onAbout: (c) => {},
         onSearch: (c) => navigateToSearch(c),
         onProfile: (c) => placeholderCallbackForButtons(),
         onCart: (c) => navigateToCart(c),
-        onSale: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const SalePage())),
+        onSale: (c) => c.go('/sale'),
+        onGallery: (c) => c.go('/gallery'),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             ResponsiveHeader(
               onHome: (c) => navigateToHome(c),
-              onAbout: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const AboutUsPage())),
+              onAbout: (c) => {},
               onSearch: (c) => navigateToSearch(c),
               onProfile: (c) => placeholderCallbackForButtons(),
               onCart: (c) => navigateToCart(c),
-              onSale: (c) => Navigator.push(c, MaterialPageRoute(builder: (_) => const SalePage())),
+              onSale: (c) => c.go('/sale'),
+              onGallery: (c) => c.go('/gallery'),
               onOpenDrawer: (c) => scaffoldKey.currentState?.openEndDrawer(),
             ),
 
