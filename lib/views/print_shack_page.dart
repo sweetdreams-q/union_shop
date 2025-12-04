@@ -1,4 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:union_shop/models/cart.dart';
+import 'package:union_shop/models/product.dart';
+import 'package:union_shop/widgets/responsive_header.dart';
+import 'package:union_shop/widgets/footer.dart';
+import 'package:union_shop/views/about_us_page.dart';
+import 'package:union_shop/views/search_page.dart';
+import 'package:union_shop/views/cart_page.dart';
+import 'package:union_shop/views/sale_page.dart';
+import 'package:union_shop/views/gallery_page.dart';
 
 class PrintShackPage extends StatefulWidget {
   const PrintShackPage({super.key});
@@ -8,6 +17,7 @@ class PrintShackPage extends StatefulWidget {
 }
 
 class _PrintShackPageState extends State<PrintShackPage> {
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   String _selectedTextType = 'One Line of Text';
   late TextEditingController _line1Controller;
   late TextEditingController _line2Controller;
@@ -36,6 +46,48 @@ class _PrintShackPageState extends State<PrintShackPage> {
     }
   }
 
+  void navigateToHome(BuildContext context) {
+    Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+  }
+
+  void navigateToAboutUs(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const AboutUsPage()),
+    );
+  }
+
+  void navigateToSearch(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const SearchPage()),
+    );
+  }
+
+  void navigateToCart(BuildContext context) {
+    final messenger = ScaffoldMessenger.of(context);
+    messenger.hideCurrentSnackBar();
+    Navigator.of(context, rootNavigator: true).push(
+      MaterialPageRoute(builder: (_) => const CartPage()),
+    );
+  }
+
+  void navigateToSale(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const SalePage()),
+    );
+  }
+
+  void navigateToGallery(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const GalleryPage()),
+    );
+  }
+
+  void placeholderCallbackForButtons() {}
+
   void _addToCart(BuildContext context) {
     if (_line1Controller.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -51,13 +103,42 @@ class _PrintShackPageState extends State<PrintShackPage> {
       return;
     }
 
-    // Show confirmation
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Added $_quantity item(s) to cart - £${(_price * _quantity).toStringAsFixed(2)}'),
-        duration: const Duration(seconds: 2),
+    // Create a custom product for Print Shack
+    final personalizationText = _selectedTextType == 'Two Lines of Text'
+        ? '${_line1Controller.text} / ${_line2Controller.text}'
+        : _line1Controller.text;
+
+    final printShackProduct = Product(
+      id: 'print_shack_${DateTime.now().millisecondsSinceEpoch}',
+      title: 'The Print Shack - Personalised Hoodie ($personalizationText)',
+      price: '£${_price.toStringAsFixed(2)}',
+      imageUrl: 'assets/product_images/print_shack.png',
+      description: 'Custom personalized hoodie with text: $personalizationText',
+      availableSizes: const [], // No size selection for print shack
+    );
+
+    final cart = CartProvider.of(context);
+    cart.addItem(printShackProduct, quantity: _quantity);
+
+    final snack = SnackBar(
+      duration: const Duration(seconds: 3),
+      content: Text('Added $_quantity × Personalised Hoodie to cart - £${(_price * _quantity).toStringAsFixed(2)}'),
+      action: SnackBarAction(
+        label: 'VIEW CART',
+        onPressed: () {
+          Navigator.of(context, rootNavigator: true).push(
+            MaterialPageRoute(builder: (_) => const CartPage()),
+          );
+        },
       ),
     );
+
+    final controller = ScaffoldMessenger.of(context).showSnackBar(snack);
+    Future.delayed(snack.duration + const Duration(milliseconds: 100), () {
+      try {
+        controller.close();
+      } catch (_) {}
+    });
   }
 
   @override
@@ -65,18 +146,40 @@ class _PrintShackPageState extends State<PrintShackPage> {
     final isMobile = MediaQuery.of(context).size.width < 768;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('The Print Shack'),
-        backgroundColor: const Color(0xFF4d2963),
-        foregroundColor: Colors.white,
+      key: scaffoldKey,
+      endDrawer: ResponsiveHeader.buildDrawer(
+        context,
+        onHome: (c) => navigateToHome(c),
+        onAbout: (c) => navigateToAboutUs(c),
+        onSearch: (c) => navigateToSearch(c),
+        onProfile: (c) => placeholderCallbackForButtons(),
+        onCart: (c) => navigateToCart(c),
+        onSale: (c) => navigateToSale(c),
+        onGallery: (c) => navigateToGallery(c),
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: isMobile ? 16.0 : 32.0,
-            vertical: 24.0,
-          ),
-          child: isMobile ? _buildMobileLayout() : _buildDesktopLayout(),
+        child: Column(
+          children: [
+            ResponsiveHeader(
+              onHome: (c) => navigateToHome(c),
+              onAbout: (c) => navigateToAboutUs(c),
+              onSearch: (c) => navigateToSearch(c),
+              onProfile: (c) => placeholderCallbackForButtons(),
+              onCart: (c) => navigateToCart(c),
+              onSale: (c) => navigateToSale(c),
+              onGallery: (c) => navigateToGallery(c),
+              onOpenDrawer: (c) => scaffoldKey.currentState?.openEndDrawer(),
+            ),
+            Container(
+              color: Colors.white,
+              padding: EdgeInsets.symmetric(
+                horizontal: isMobile ? 16.0 : 32.0,
+                vertical: 24.0,
+              ),
+              child: isMobile ? _buildMobileLayout() : _buildDesktopLayout(),
+            ),
+            const AppFooter(),
+          ],
         ),
       ),
     );
