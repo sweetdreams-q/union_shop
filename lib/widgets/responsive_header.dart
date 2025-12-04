@@ -178,16 +178,40 @@ class ResponsiveHeader extends StatelessWidget {
                         : Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              IconButton(
-                                icon: const Icon(Icons.home_outlined, size: 18, color: Colors.grey),
-                                padding: const EdgeInsets.all(8),
+                              TextButton(
                                 onPressed: () => onHome(context),
+                                style: TextButton.styleFrom(
+                                  foregroundColor: Colors.grey[700],
+                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                ),
+                                child: const Text(
+                                  'Home',
+                                  style: TextStyle(fontSize: 14),
+                                ),
                               ),
-                              IconButton(
-                                icon: const Icon(Icons.info_outline, size: 18, color: Colors.grey),
-                                padding: const EdgeInsets.all(8),
+                              TextButton(
                                 onPressed: () => onAbout(context),
+                                style: TextButton.styleFrom(
+                                  foregroundColor: Colors.grey[700],
+                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                ),
+                                child: const Text(
+                                  'About Us',
+                                  style: TextStyle(fontSize: 14),
+                                ),
                               ),
+                              TextButton(
+                                onPressed: () => onSale(context),
+                                style: TextButton.styleFrom(
+                                  foregroundColor: Colors.grey[700],
+                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                ),
+                                child: const Text(
+                                  'Sale',
+                                  style: TextStyle(fontSize: 14),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
                               IconButton(
                                 icon: const Icon(Icons.search, size: 18, color: Colors.grey),
                                 padding: const EdgeInsets.all(8),
@@ -202,22 +226,6 @@ class ResponsiveHeader extends StatelessWidget {
                                 icon: const Icon(Icons.shopping_bag_outlined, size: 18, color: Colors.grey),
                                 padding: const EdgeInsets.all(8),
                                 onPressed: () => onCart(context),
-                              ),
-                              IconButton(
-                                icon: const Icon(Icons.menu, size: 18, color: Colors.grey),
-                                padding: const EdgeInsets.all(8),
-                                onPressed: () {
-                                  if (onOpenDrawer != null) {
-                                    onOpenDrawer!(context);
-                                  } else {
-                                    Scaffold.of(context).openEndDrawer();
-                                  }
-                                },
-                              ),
-                              IconButton(
-                                icon: const Icon(Icons.local_offer, size: 18, color: Colors.grey),
-                                padding: const EdgeInsets.all(8),
-                                onPressed: () => onSale(context),
                               ),
                             ],
                           ),
