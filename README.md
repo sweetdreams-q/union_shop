@@ -91,4 +91,3 @@ docs/                    # (optional) screenshots/GIFs for README
 ## Contact
 - Maintainer: sweetdreams-q
 - GitHub: https://github.com/sweetdreams-q/union_shop
-- Email: add-your-contact@example.com (replace with your preferred contact)
