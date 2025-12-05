@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart' show GoRoute, GoRouter;
+// ignore: depend_on_referenced_packages
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
@@ -16,12 +17,10 @@ import 'package:union_shop/views/print_shack_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final cart = CartModel();
-  await cart.loadFromStorage();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(UnionShopApp(cart: cart));
+  runApp(const UnionShopApp());
 }
 
 // GoRouter configuration
@@ -84,15 +83,12 @@ final GoRouter _router = GoRouter(
 );
 
 class UnionShopApp extends StatelessWidget {
-  final CartModel? cartOverride;
-
-  const UnionShopApp({super.key, CartModel? cart}) : cartOverride = cart;
+  const UnionShopApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final cart = cartOverride ?? CartModel();
     return CartProvider(
-      cart: cart,
+      cart: CartModel(),
       child: MaterialApp.router(
         title: 'Union Shop',
         debugShowCheckedModeBanner: false,
