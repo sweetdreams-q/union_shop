@@ -20,9 +20,10 @@ Flutter web app that recreates the University of Portsmouth Students' Union shop
 
 ## Getting Started
 ### Prerequisites
-- Flutter SDK 3.x
-- Chrome for web target (recommended)
+- Flutter SDK 3.x (with Dart 3)
+- Chrome for web target (recommended) or Edge
 - Git
+- Windows/macOS/Linux supported by Flutter; ensure `flutter doctor` reports no issues
 
 ### Clone and Install
 ```bash
@@ -31,7 +32,7 @@ cd union_shop
 flutter pub get
 ```
 
-### Run (web)
+### Run (web, preferred)
 ```bash
 flutter run -d chrome
 ```
@@ -48,14 +49,15 @@ flutter run -d edge    # or chrome
 - Products: tap a product title/card to open details; size selection and description are available.
 - Sale: discounted products show sale and original prices; layout wraps on small widths.
 - Search: use the search page to find items (UI-level in this build).
-- Cart: view items and totals (demo logic). 
+- Cart: view items and totals (demo logic).
 - Footer: scroll to the bottom to view opening hours and links.
+- Screenshots/GIFs: add your captures to `docs/` and embed here when available.
 
 ## Tests
 ```bash
 flutter test test/widget/home_page_widget_test.dart
 ```
-All homepage widget tests currently pass.
+All homepage widget tests currently pass. Run `flutter test` to execute the full suite.
 
 ## Project Structure
 ```plaintext
@@ -67,6 +69,7 @@ lib/
 assets/product_images/   # Local product images
 test/                    # Widget tests
 web/                     # Web entry assets
+docs/                    # (optional) screenshots/GIFs for README
 ```
 
 ## Configuration
@@ -78,11 +81,14 @@ web/                     # Web entry assets
 - Network images in the hero carousel rely on external URLs; they render a grey fallback on failure.
 - Authentication flows are not implemented; `firebase_auth` is present for future work.
 - Cart and search are demo-level and do not persist data.
+- No offline support; content requires network for remote images.
 
 ## Contributing
 - Open an issue or submit a PR with a clear description and screenshots/GIFs when UI changes.
 - Run `flutter format .` and `flutter test` before opening a PR.
+- Follow semantic, focused commits and describe user-facing changes in the PR body.
 
 ## Contact
 - Maintainer: sweetdreams-q
 - GitHub: https://github.com/sweetdreams-q/union_shop
+- Email: add-your-contact@example.com (replace with your preferred contact)
