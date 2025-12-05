@@ -13,7 +13,6 @@ import 'package:union_shop/views/sale_page.dart';
 import 'package:union_shop/models/cart.dart';
 import 'package:union_shop/views/cart_page.dart';
 import 'package:union_shop/views/print_shack_page.dart';
-import 'package:union_shop/views/sign_in_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +24,7 @@ void main() async {
 
 // GoRouter configuration
 final GoRouter _router = GoRouter(
-  initialLocation: '/sign-in',
+  initialLocation: '/',
   errorBuilder: (context, state) => Scaffold(
     body: Center(
       child: Text('Page not found: ${state.uri}'),
@@ -66,11 +65,6 @@ final GoRouter _router = GoRouter(
       path: '/print-shack',
       name: 'print-shack',
       builder: (context, state) => const PrintShackPage(),
-    ),
-    GoRoute(
-      path: '/sign-in',
-      name: 'sign-in',
-      builder: (context, state) => const SignInPage(),
     ),
     GoRoute(
       path: '/product/:id',
