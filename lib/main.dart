@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:go_router/go_router.dart' show GoRoute, GoRouter;
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 import 'package:union_shop/views/home_page.dart';
 import 'package:union_shop/views/product_page.dart';
@@ -11,14 +13,19 @@ import 'package:union_shop/views/sale_page.dart';
 import 'package:union_shop/models/cart.dart';
 import 'package:union_shop/views/cart_page.dart';
 import 'package:union_shop/views/print_shack_page.dart';
+import 'package:union_shop/views/sign_in_page.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const UnionShopApp());
 }
 
 // GoRouter configuration
 final GoRouter _router = GoRouter(
-  initialLocation: '/',
+  initialLocation: '/sign-in',
   errorBuilder: (context, state) => Scaffold(
     body: Center(
       child: Text('Page not found: ${state.uri}'),
@@ -59,6 +66,11 @@ final GoRouter _router = GoRouter(
       path: '/print-shack',
       name: 'print-shack',
       builder: (context, state) => const PrintShackPage(),
+    ),
+    GoRoute(
+      path: '/sign-in',
+      name: 'sign-in',
+      builder: (context, state) => const SignInPage(),
     ),
     GoRoute(
       path: '/product/:id',

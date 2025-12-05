@@ -273,10 +273,10 @@ class _PrintShackPageState extends State<PrintShackPage> {
           ),
           child: Column(
             children: [
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
+                  Text(
                     'Essentials Hoodie:',
                     style: TextStyle(
                       fontSize: 14,
@@ -285,7 +285,7 @@ class _PrintShackPageState extends State<PrintShackPage> {
                   ),
                   Text(
                     '£16.00',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                     ),
