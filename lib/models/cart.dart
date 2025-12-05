@@ -50,6 +50,8 @@ class CartModel extends ChangeNotifier {
   }
 
   double get total => _items.fold(0.0, (sum, item) => sum + item.subTotal);
+  double get totalPrice => total; // Alias for total
+  int get itemCount => _items.fold(0, (sum, item) => sum + item.quantity);
 }
 
 class CartProvider extends InheritedNotifier<CartModel> {

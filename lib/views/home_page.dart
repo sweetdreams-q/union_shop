@@ -160,18 +160,20 @@ class _HomeScreenState extends State<HomeScreen> {
                         slide = slides[index - 1];
                       }
 
-                      return Positioned.fill(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: NetworkImage(slide['image']!),
-                              fit: BoxFit.cover,
+                      return Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          Image.network(
+                            slide['image']!,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) => Container(
+                              color: Colors.grey[300],
                             ),
                           ),
-                          child: Container(
+                          Container(
                             color: Colors.black.withValues(alpha: 0.5),
                           ),
-                        ),
+                        ],
                       );
                     },
                   ),

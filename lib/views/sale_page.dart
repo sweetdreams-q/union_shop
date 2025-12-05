@@ -95,7 +95,10 @@ class _SaleProductTile extends StatelessWidget {
           fit: BoxFit.contain,
         ),
         title: Text(product.title),
-        subtitle: Row(
+        subtitle: Wrap(
+          spacing: 8,
+          runSpacing: 4,
+          crossAxisAlignment: WrapCrossAlignment.center,
           children: [
             if (product.onSale && product.salePrice != null) ...[
               Text(
@@ -106,7 +109,6 @@ class _SaleProductTile extends StatelessWidget {
                   fontSize: 16,
                 ),
               ),
-              const SizedBox(width: 8),
               Text(
                 product.price,
                 style: const TextStyle(
