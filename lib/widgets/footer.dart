@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:union_shop/views/about_us_page.dart';
 
 class AppFooter extends StatefulWidget {
@@ -167,6 +168,10 @@ class _AppFooterState extends State<AppFooter> {
           ),
         ),
         const SizedBox(height: 16),
+        GestureDetector(
+          onTap: () => context.go('/search'),
+          child: _buildFooterText('Search'),
+        ),
         _buildFooterText('Contact Us'),
         _buildFooterText('FAQs'),
         _buildFooterText('Shipping Information'),
