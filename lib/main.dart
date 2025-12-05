@@ -16,10 +16,12 @@ import 'package:union_shop/views/print_shack_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  final cart = CartModel();
+  await cart.loadFromStorage();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const UnionShopApp());
+  runApp(UnionShopApp(cart: cart));
 }
 
 // GoRouter configuration
@@ -82,12 +84,15 @@ final GoRouter _router = GoRouter(
 );
 
 class UnionShopApp extends StatelessWidget {
-  const UnionShopApp({super.key});
+  final CartModel? cartOverride;
+
+  const UnionShopApp({super.key, CartModel? cart}) : cartOverride = cart;
 
   @override
   Widget build(BuildContext context) {
+    final cart = cartOverride ?? CartModel();
     return CartProvider(
-      cart: CartModel(),
+      cart: cart,
       child: MaterialApp.router(
         title: 'Union Shop',
         debugShowCheckedModeBanner: false,
